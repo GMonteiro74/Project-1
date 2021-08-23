@@ -3,7 +3,7 @@ class Player {
     constructor() {
         this.width = 30;
         this.height = 30;
-        this.x = 235;
+        this.x = (canvasWidth / 2) - (this.width / 2);
         this.y = canvasHeight - 45;
         
     }
