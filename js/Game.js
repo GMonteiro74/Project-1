@@ -3,8 +3,9 @@ class Game {
         this.ship = {};
         this.enemies = [];
         this.enemiesFrequency = 0;
-        this.bullet = {};
+        this.bullet = [];
         this.score = 0;
+        this.lives = 5;
       }
     }
     

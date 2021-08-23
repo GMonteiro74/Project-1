@@ -26,16 +26,16 @@ class Player {
                 this.x += 10;
               }
               break;
-            case "ArrowUp":
-                if(this.y >= 0) {
-                    this.y -= 10;
-                }
-                break;
-            case "ArrowDown":
-                if (this.y < canvasHeight - this.height) {
-                    this.y += 10;
-                }
-                break;
+            // case "ArrowUp":
+            //     if(this.y >= 0) {
+            //         this.y -= 10;
+            //     }
+            //     break;
+            // case "ArrowDown":
+            //     if (this.y < canvasHeight - this.height) {
+            //         this.y += 10;
+            //     }
+            //     break;
           }
           this.draw();
     }
