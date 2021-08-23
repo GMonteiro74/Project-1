@@ -25,22 +25,26 @@ function startGame() {
 
 function shot(key) {
     if (key === "ArrowUp") {
-        const newShot = new Bullet(currentGame.ship.x, currentGame.ship.y);
+        const newShot = new Bullet(currentGame.ship.x + currentGame.ship.width / 2 - 2, currentGame.ship.y);
         currentGame.bullet.push(newShot);
     }
 
     for (const shots of currentGame.bullet) {
         shots.y -= 3;
         shots.draw();
-    }
 
-}
+        
+    }
+        
+}    
+
+
 
 
 function drawEnemies() {
     currentGame.enemiesFrequency++;
 
-    if (currentGame.enemiesFrequency % 379 === 0) {
+    if (currentGame.enemiesFrequency % 197 === 0) {
         const randomEnemyX = Math.floor(Math.random() * 450);
 
     const newEnemy = new Enemy(randomEnemyX, 0);
@@ -66,12 +70,7 @@ function drawEnemies() {
             currentGame.enemies.splice(index, 1);
         }
 
-        if (shotEnemy(enemy)) {
-            currentGame.score++;
-            score.innerText = currentGame.score;
-            currentGame.enemies.splice(index, 1);
 
-        }
     }))
 }
 
@@ -80,30 +79,33 @@ function detectCollision(enemy) {
     return !(
         currentGame.ship.left() > enemy.right() ||
         currentGame.ship.right() < enemy.left() ||
-        currentGame.ship.top() > enemy.bottom()
+        currentGame.ship.top() > enemy.bottom() ||
+        currentGame.ship.bottom() < enemy.top()
         
     )
     
 }
 
-function shotEnemy(enemy) {
-    
-    // for (const shot of currentGame.bullet) {
-    //     return !(shot.left() > enemy.right() ||
-    //     shot.right() < enemy.left() ||
-    //     shot.top() > enemy.bottom()
-    //     )
-    // }
-
-    currentGame.bullet.forEach(shot => {
-        return !(shot.left() > enemy.right() ||
-        shot.right() < enemy.left() ||
-        shot.top() > enemy.bottom()
-        )
+function shotEnemy() {        
+    currentGame.bullet.forEach((shot, indexShot) => {
+        currentGame.enemies.forEach((enemy, indexEnemy) => {
+            if (
+                shot.top() < enemy.bottom() &&
+                shot.right() > enemy.left() &&
+                shot.left() < enemy.right()
+                ) {
+                currentGame.bullet.splice(indexShot, 1);
+                currentGame.enemies.splice(indexEnemy, 1);
+                currentGame.score++;
+                score.innerText = currentGame.score;
+            } else if (shot.bottom() < 0) {
+                currentGame.bullet.splice(indexShot, 1);
+            }
+        })      
     })
-        
+
+};
     
-}
 
 
 function updateCanvas() {
@@ -111,6 +113,7 @@ function updateCanvas() {
     currentGame.ship.draw();
     drawEnemies();
     shot();
+    shotEnemy();
     requestAnimationFrame(updateCanvas);
 }
     
