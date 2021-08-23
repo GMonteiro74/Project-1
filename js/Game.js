@@ -6,6 +6,7 @@ class Game {
         this.bullet = [];
         this.score = 0;
         this.lives = 5;
+        this.gameOver = false;
       }
     }
     

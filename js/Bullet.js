@@ -11,9 +11,6 @@ class Bullet {
         context.fillRect(this.x, this.y, this.width, this.height);
     }    
 
-
-
-
     top() {
         return this.y;
     }
