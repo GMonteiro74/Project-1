@@ -18,11 +18,6 @@ class Enemy {
     draw() {
         context.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
-
-    // draw() {
-    //     context.fillStyle = this.color;
-    //     context.fillRect(this.x, this.y, this.width, this.height);
-    // }  
   
     top() {
         return this.y;
