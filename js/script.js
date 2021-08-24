@@ -94,8 +94,8 @@ function drawEnemies() {
                 const randomEnemyX = Math.floor(Math.random() * 450);
 
                 const newEnemy = new Enemy(randomEnemyX, 0, 40, 35, "green");
-    if (currentGame.enemiesFrequency % frequencyModule === 0) {
-        const randomEnemyX = Math.floor(Math.random() * 550);
+    // if (currentGame.enemiesFrequency % frequencyModule === 0) {
+    //     const randomEnemyX = Math.floor(Math.random() * 550);
 
                 currentGame.enemies.push(newEnemy);
             }
@@ -193,7 +193,7 @@ function drawEnemies() {
         
     }))
 }
-}
+
 
 
 function detectCollision(enemy) {
@@ -267,10 +267,10 @@ function gameWin() {
 
 }
 
-function gameOver() {
-    cancelAnimationFrame(currentGame.animationId);
-    context.clearRect(0, 0, canvasWidth, canvasHeight);
-}
+// function gameOver() {
+//     cancelAnimationFrame(currentGame.animationId);
+//     context.clearRect(0, 0, canvasWidth, canvasHeight);
+// }
 
     function checkHiScore() {
     if (currentGame.score > hiScoreValue) {
@@ -302,13 +302,13 @@ function updateCanvas() {
     shot();
     shotEnemy();
     boss();
-    if (currentGame.gameOver === false || currentGame.gameWin === false) {
-    currentGame.animationId = requestAnimationFrame(updateCanvas);
-    } else if (currentGame.gameOver === true) {
-        gameOver();
-    } else if (currentGame.gameWin === true) {
-        gameWin();
-    }
+    // if (currentGame.gameOver === false || currentGame.gameWin === false) {
+    // currentGame.animationId = requestAnimationFrame(updateCanvas);
+    // } else if (currentGame.gameOver === true) {
+    //     gameOver();
+    // } else if (currentGame.gameWin === true) {
+    //     gameWin();
+    // }
     changeLevels();
     idLevel.innerText = currentGame.level;
     if (currentGame.gameOver === false) {
