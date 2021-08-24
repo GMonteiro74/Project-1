@@ -10,6 +10,7 @@ let frequencyModule;
 let right;
 
 let currentGame;
+let animationId;
 
 let score = document.getElementById("score");
 let lives = document.getElementById("lives");
@@ -34,7 +35,7 @@ function startGame() {
     currentGame.boss = new Boss(canvasWidth / 2 - 40, -90);
     currentGame.ship.draw();
     overCanvas.style.display = 'none';
-    cancelAnimationFrame(currentGame.animationId);
+    cancelAnimationFrame(animationId);
     updateCanvas();
 }
 
@@ -56,17 +57,29 @@ function changeLevels() {
     if (currentGame.score < 5) {
         
         frequencyModule = 80;
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv1.png)';
+        canvas.style.backgroundRepeat = 'no-repeat';
+        canvas.style.backgroundPosition = 'center center';
 
     } else if (currentGame.score >= 5 && currentGame.score < 10) {
         frequencyModule = 70;
         currentGame.level = 2;
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv2.png)';
+        canvas.style.backgroundRepeat = 'no-repeat';
+        canvas.style.backgroundPosition = 'center center';
 
     } else if (currentGame.score >= 10 && currentGame.score < 20) {
         frequencyModule = 60;
         currentGame.level = 3;
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv3.png)';
+        canvas.style.backgroundRepeat = 'no-repeat';
+        canvas.style.backgroundPosition = 'center center';
 // A function boss() apaguei e coloquei aqui a condiçao para que ela se iniciasse, na drawEnemies() tens o resto
     } else {
         currentGame.bossStage = true;
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/bosslvl.png)';
+        canvas.style.backgroundRepeat = 'no-repeat';
+        canvas.style.backgroundPosition = 'center center';
         currentGame.boss.move();
         currentGame.boss.draw();
         }
@@ -151,9 +164,6 @@ function drawEnemies() {
         //     currentGame.bossShots.splice(index, 1);
         // }
 
-
-
-
     }))
         
 }
@@ -205,11 +215,6 @@ function shotEnemy() {
     })
 
     if (currentGame.boss.health <= 0) {
-        // overCanvas.innerText = 'YOU WIN !!!';
-        // overCanvas.style.display = 'block';
-        // currentGame.score = 100000;
-        // score.innerText = currentGame.score;
-        // cancelAnimationFrame(currentGame.animationId);
         gameWin();
     }
         
@@ -217,6 +222,7 @@ function shotEnemy() {
 
 
 function gameWin() {
+
     context.clearRect(0, 0, canvasWidth, canvasHeight);
     currentGame.gameWin = true;
     currentGame.enemiesFrequency = 0;
@@ -224,20 +230,16 @@ function gameWin() {
     //currentGame.score = 0;
     currentGame.enemies = [];
     currentGame.bossShots = [];
+    currentGame.bullet = [];
     //score.innerText = 0;
     lives.innerText = 5;
     overCanvas.innerText = 'YOU WIN'
     overCanvas.style.display = 'block';
-    cancelAnimationFrame(currentGame.animationId);
+    cancelAnimationFrame(animationId);
 
 }
 
-// function gameOver() {
-//     cancelAnimationFrame(currentGame.animationId);
-//     context.clearRect(0, 0, canvasWidth, canvasHeight);
-// }
-
-    function checkHiScore() {
+function checkHiScore() {
     if (currentGame.score > hiScoreValue) {
         hiScoreValue = currentGame.score;
         hiScore.innerText = hiScoreValue;
@@ -256,11 +258,13 @@ function gameOver() {
     lives.innerText = 5;
     overCanvas.innerText = 'GAME OVER'
     overCanvas.style.display = 'block';
-    cancelAnimationFrame(currentGame.animationId);
+    context.clearRect(0, 0, canvasWidth, canvasHeight);
+    cancelAnimationFrame(animationId);
     
 }
 
 function updateCanvas() {
+
     context.clearRect(0, 0, canvasWidth, canvasHeight);
     currentGame.ship.draw();
     drawEnemies();
@@ -269,7 +273,7 @@ function updateCanvas() {
     changeLevels();
     idLevel.innerText = currentGame.level;
     if (currentGame.gameOver === false || currentGame.gameWin === false) {
-    currentGame.animationId = requestAnimationFrame(updateCanvas);
+    animationId = requestAnimationFrame(updateCanvas);
     } 
 }
     
@@ -296,6 +300,6 @@ document.addEventListener('keydown', (e) => {
 })
 
 
-
+}
 
 

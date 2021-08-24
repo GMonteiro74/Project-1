@@ -12,42 +12,26 @@ class Player {
         
     }
 
-
-
     draw() {
         context.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
-
-    // draw() {
-    //     context.fillStyle = 'tomato';
-    //     context.fillRect(this.x, this.y, this.width, this.height);
-    // }
 
     move(key) {
         context.clearRect(this.x, this.y, this.width, this.height);
         switch (key) {
             case "ArrowLeft":
               if (this.x > 13) {
-                this.x -= 12;
+                this.x -= 15;
               }      
               break;
             case "ArrowRight":
               if (this.x <= canvasWidth - (this.width + 13) ) {
-                this.x += 12;
+                this.x += 15;
               }
               break;
-            // case "ArrowUp":
-            //     if(this.y >= 0) {
-            //         this.y -= 10;
-            //     }
-            //     break;
-            // case "ArrowDown":
-            //     if (this.y < canvasHeight - this.height) {
-            //         this.y += 10;
-            //     }
-            //     break;
+            
           }
-          // this.draw();
+         
     }
 
     left() {
