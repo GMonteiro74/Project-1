@@ -3,16 +3,24 @@ const context = canvas.getContext('2d');
 
 const canvasWidth = canvas.clientWidth;
 const canvasHeight = canvas.clientHeight;
+let hiScoreValue = 0;
 
-let animationID;
+let frequencyModule;
 
 let currentGame;
 
 let score = document.getElementById("score");
 let lives = document.getElementById("lives");
+let hiScore = document.querySelector('#hiScore');
 let overCanvas = document.querySelector('#overCanvas');
+let idLevel = document.querySelector('#level');
+
 lives.innerText = 5;
 score.innerText = 0;
+hiScore.innerText = hiScoreValue;
+
+
+
 
 const startBtn = document.querySelector('#start');
 startBtn.onclick = () => {
@@ -24,6 +32,7 @@ function startGame() {
     currentGame.ship = new Player();
     currentGame.ship.draw();
     overCanvas.style.display = 'none';
+    cancelAnimationFrame(currentGame.animationId);
     updateCanvas();
 }
 
@@ -36,20 +45,33 @@ function shot(key) {
     for (const shots of currentGame.bullet) {
         shots.y -= 3;
         shots.draw();
-
-        
     }
         
 }    
 
+function changeLevels() {
 
+    if (currentGame.score < 5) {
+        
+        frequencyModule = 80;
+
+    } else if (currentGame.score >= 5 && currentGame.score < 10) {
+        frequencyModule = 70;
+        currentGame.level = 2;
+
+    } else if (currentGame.score >= 10) {
+        frequencyModule = 60;
+        currentGame.level = 3;
+    }
+ }
 
 
 function drawEnemies() {
+
     currentGame.enemiesFrequency++;
 
-    if (currentGame.enemiesFrequency % 80 === 0) {
-        const randomEnemyX = Math.floor(Math.random() * 450);
+    if (currentGame.enemiesFrequency % frequencyModule === 0) {
+        const randomEnemyX = Math.floor(Math.random() * 550);
 
     const newEnemy = new Enemy(randomEnemyX, 0);
 
@@ -57,7 +79,8 @@ function drawEnemies() {
     }
 
     currentGame.enemies.forEach(((enemy, index) => {
-        enemy.y += 1;
+
+        enemy.y ++;
         enemy.draw();
 
         if (detectCollision(enemy)){
@@ -81,12 +104,11 @@ function drawEnemies() {
 
 
 function detectCollision(enemy) {
+
     return !(
         currentGame.ship.left() > enemy.right() ||
         currentGame.ship.right() < enemy.left() ||
-        currentGame.ship.top() > enemy.bottom() ||
-        currentGame.ship.bottom() < enemy.top()
-        
+        currentGame.ship.top() > enemy.bottom()
     )
     
 }
@@ -94,6 +116,11 @@ function detectCollision(enemy) {
 function shotEnemy() {
 
     currentGame.bullet.forEach((shot, indexShot) => {
+
+        if (shot.bottom() < 0) {
+            currentGame.bullet.splice(indexShot, 1);
+        }
+
         currentGame.enemies.forEach((enemy, indexEnemy) => {
             if (
                 shot.top() < enemy.bottom() &&
@@ -104,9 +131,6 @@ function shotEnemy() {
                 currentGame.enemies.splice(indexEnemy, 1);
                 currentGame.score++;
                 score.innerText = currentGame.score;
-                
-            } else if (shot.bottom() < 0) {
-                currentGame.bullet.splice(indexShot, 1);
             }
         })
         
@@ -114,8 +138,20 @@ function shotEnemy() {
         
 }
 
+function checkHiScore() {
+    if (currentGame.score > hiScoreValue) {
+        hiScoreValue = currentGame.score;
+        hiScore.innerText = hiScoreValue;
+    }
+}
+
+function closeOverCanvas() {
+    overCanvas.style.display = 'none';
+}
+
 function gameOver() {
-  
+
+    checkHiScore();
     currentGame.gameOver = true;
     currentGame.enemiesFrequency = 0;
     currentGame.score = 0;
@@ -124,7 +160,7 @@ function gameOver() {
     lives.innerText = 5;
     overCanvas.innerText = 'GAME OVER'
     overCanvas.style.display = 'block';
-    cancelAnimationFrame(currentGame.animationID);
+    cancelAnimationFrame(currentGame.animationId);
     
 }
 
@@ -134,11 +170,11 @@ function updateCanvas() {
     drawEnemies();
     shot();
     shotEnemy();
+    changeLevels();
+    idLevel.innerText = currentGame.level;
     if (currentGame.gameOver === false) {
-    currentGame.animationID = requestAnimationFrame(updateCanvas);
-    } else {
-        gameOver();
-    }
+    currentGame.animationId = requestAnimationFrame(updateCanvas);
+    } 
 }
     
 
