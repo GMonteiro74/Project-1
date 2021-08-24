@@ -1,29 +1,39 @@
 class Player {
 
     constructor() {
-        this.width = 30;
-        this.height = 30;
+        this.width = 25;
+        this.height = 45;
         this.x = (canvasWidth / 2) - (this.width / 2);
-        this.y = canvasHeight - 45;
+        this.y = canvasHeight - 60;
+
+        const img = new Image();
+        img.src = "../rocket_recortado.png";
+        this.image = img;
         
     }
 
+
+
     draw() {
-        context.fillStyle = 'tomato';
-        context.fillRect(this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
+
+    // draw() {
+    //     context.fillStyle = 'tomato';
+    //     context.fillRect(this.x, this.y, this.width, this.height);
+    // }
 
     move(key) {
         context.clearRect(this.x, this.y, this.width, this.height);
         switch (key) {
             case "ArrowLeft":
-              if (this.x > 0) {
-                this.x -= 10;
+              if (this.x > 13) {
+                this.x -= 12;
               }      
               break;
             case "ArrowRight":
-              if (this.x <= canvasWidth - this.width) {
-                this.x += 10;
+              if (this.x <= canvasWidth - (this.width + 13) ) {
+                this.x += 12;
               }
               break;
             // case "ArrowUp":

@@ -7,7 +7,7 @@ class Bullet {
     }
 
     draw() {
-        context.fillStyle = "green";
+        context.fillStyle = "yellow";
         context.fillRect(this.x, this.y, this.width, this.height);
     }    
 

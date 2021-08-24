@@ -7,6 +7,14 @@ class Game {
         this.score = 0;
         this.lives = 5;
         this.gameOver = false;
+        this.animationId = null;
+        this.bossStage = false;
+        this.boss = {};
+        this.bossShots = [];
+        this.gameWin = false;
+        
       }
+
+      
     }
     
