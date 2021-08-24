@@ -7,7 +7,7 @@ class Player {
         this.y = canvasHeight - 60;
 
         const img = new Image();
-        img.src = "../rocket_recortado.png";
+        img.src = "./images/rocket_recortado.png";
         this.image = img;
         
     }

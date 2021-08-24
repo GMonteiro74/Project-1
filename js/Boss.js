@@ -7,16 +7,10 @@ class Boss {
         this.health = 100;
 
         const img = new Image();
-        img.src = "../pngwing.com.png";
+        img.src = "./images/pngwing.com.png";
         this.image = img;
         
     }
-
-
-
-    // draw() {
-    //     context.drawImage(this.image, this.x, this.y, this.width, this.height);
-    // }
 
     draw() {
         if (this.health > 75) {
@@ -29,7 +23,7 @@ class Boss {
             this.width = 40;
             this.height = 40;
             const img2 = new Image();
-            img2.src = "../Boss_vermelho.png";
+            img2.src = "./images/Boss_vermelho.png";
             this.image = img2;
             context.drawImage(this.image, this.x, this.y, this.width, this.height);
 
@@ -52,16 +46,14 @@ class Boss {
         if (this.y === 10 &&  this.x < ((canvasWidth - 10) - this.width) && right === true) {
             this.x += 1.5;
         } else {
-            right = false
+            right = false;
         }
 
         if (this.y === 10 && right === false && this.x > 10) {
             this.x -= 1.5;
         } else {
-            right = true
+            right = true;
         }
-
-        // console.log(right, this.x)
 
     }
 
