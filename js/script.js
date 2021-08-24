@@ -3,16 +3,26 @@ const context = canvas.getContext('2d');
 
 const canvasWidth = canvas.clientWidth;
 const canvasHeight = canvas.clientHeight;
+let hiScoreValue = 0;
 
 let animationId;
 let right = true
+let frequencyModule;
+
 let currentGame;
 
 let score = document.getElementById("score");
 let lives = document.getElementById("lives");
+let hiScore = document.querySelector('#hiScore');
 let overCanvas = document.querySelector('#overCanvas');
+let idLevel = document.querySelector('#level');
+
 lives.innerText = 5;
 score.innerText = 0;
+hiScore.innerText = hiScoreValue;
+
+
+
 
 const startBtn = document.querySelector('#start');
 startBtn.onclick = () => {
@@ -26,6 +36,7 @@ function startGame() {
     currentGame.boss = new Boss(canvasWidth / 2 - 40, -90);
     currentGame.ship.draw();
     overCanvas.style.display = 'none';
+    cancelAnimationFrame(currentGame.animationId);
     updateCanvas();
 }
 
@@ -38,13 +49,25 @@ function shot(key) {
     for (const shots of currentGame.bullet) {
         shots.y -= 3;
         shots.draw();
-
-        
     }
         
 }    
 
+function changeLevels() {
 
+    if (currentGame.score < 5) {
+        
+        frequencyModule = 80;
+
+    } else if (currentGame.score >= 5 && currentGame.score < 10) {
+        frequencyModule = 70;
+        currentGame.level = 2;
+
+    } else if (currentGame.score >= 10) {
+        frequencyModule = 60;
+        currentGame.level = 3;
+    }
+ }
 
 function boss() {
     
@@ -62,6 +85,7 @@ function boss() {
 
 
 function drawEnemies() {
+
     currentGame.enemiesFrequency++;
   
     if (currentGame.bossStage === false && currentGame.gameOver === false && currentGame.gameWin === false) {
@@ -70,6 +94,8 @@ function drawEnemies() {
                 const randomEnemyX = Math.floor(Math.random() * 450);
 
                 const newEnemy = new Enemy(randomEnemyX, 0, 40, 35, "green");
+    if (currentGame.enemiesFrequency % frequencyModule === 0) {
+        const randomEnemyX = Math.floor(Math.random() * 550);
 
                 currentGame.enemies.push(newEnemy);
             }
@@ -142,6 +168,8 @@ function drawEnemies() {
 
     currentGame.enemies.forEach(((enemy, index) => {
         enemy.y += 0.3; 
+
+        enemy.y ++;
         enemy.draw();
         
 
@@ -165,9 +193,11 @@ function drawEnemies() {
         
     }))
 }
+}
 
 
 function detectCollision(enemy) {
+
     return !(
         currentGame.ship.left() > enemy.right() ||
         currentGame.ship.right() < enemy.left() ||
@@ -240,6 +270,18 @@ function gameWin() {
 function gameOver() {
     cancelAnimationFrame(currentGame.animationId);
     context.clearRect(0, 0, canvasWidth, canvasHeight);
+}
+
+    function checkHiScore() {
+    if (currentGame.score > hiScoreValue) {
+        hiScoreValue = currentGame.score;
+        hiScore.innerText = hiScoreValue;
+    }
+}
+
+function gameOver() {
+
+    checkHiScore();
     currentGame.gameOver = true;
     currentGame.enemiesFrequency = 0;
     currentGame.score = 0;
@@ -267,6 +309,11 @@ function updateCanvas() {
     } else if (currentGame.gameWin === true) {
         gameWin();
     }
+    changeLevels();
+    idLevel.innerText = currentGame.level;
+    if (currentGame.gameOver === false) {
+    currentGame.animationId = requestAnimationFrame(updateCanvas);
+    } 
 }
     
 

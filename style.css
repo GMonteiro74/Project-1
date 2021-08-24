@@ -1,39 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
 }
 
 h1 {
     text-align: center;
-    /* padding-bottom: 20px; */
 }
 
 body {
-    background-color: rgb(112, 112, 112);
-    display: flex;
-    flex-direction: column;
-    height: 90vh;
-    align-items: center;
-    justify-content: space-around;
-}
-
-
-#canvas {
-    background-color: rgb(24, 24, 24);
-}
-
-#live-scores {
+    background: linear-gradient(0deg, rgba(77, 77, 77, 0.836),rgba(77, 77, 77, 0.6)), url(universe.jpg);
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    width: 20vw;
+    align-items: center;
+    height: 100vh;
+    color: #DBDBDB;
+    
+}
+
+#canvas {
+    background-color: rgba(48, 46, 46, 0.692);
+    border: 5px solid rgb(212, 216, 173);
 }
 
 #overCanvas {
     display: none;
     position: absolute;
-    top: 35%;
-    left: 36%;
+    margin-top: 50%;
+    bottom: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, 0%);    
     color: aliceblue;
     font-size: 3rem;
     font-weight: 600;
@@ -42,20 +47,23 @@ body {
 }
 
 .align-center {
-    height: 75vh;
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 20vw;
 }
 
 #start {
-    padding: 10px 20px;
+    /* text-decoration: none;
+    color: rgb(24, 24, 24);
+    padding: 20px 0;
+    width: 100%;
+    text-align: center; */
     cursor: pointer;
+    /* background-color: rgb(218, 218, 218);
+    border: 2px solid rgb(24, 24, 24); */
 }
 
-header h2 {
-    color:rgb(218, 218, 218);
-    text-align: center;
-    font-weight: 400;
-    font-size: 1.2rem;
-}

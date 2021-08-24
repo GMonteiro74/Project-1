@@ -15,26 +15,29 @@
 </head>
 <body>
 
-    <header>
-        <h1>Space Ship</h1>
-        <div id="live-scores">
-            <h2>Score: <span id="score"></span></h2>
-            <h2>Lives: <span id="lives"></span></h2>
-        </div>        
-        
-    </header>
-
     <div class="align-center">
+
+        <h1>Space Ship</h1>
+        
+        <h2>High-score: <span id="hiScore"></span></h2>
+        <h2>Score: <span id="score"></span></h2>
+        <h2>Lives: <span id="lives"></span></h2> 
+
+        <img src="instructions.png" alt="use the left and right arrow key to move and the up arrow to shoot" srcset="">
+             
+        <img src="button.png" id="start" alt="start game" srcset="">
+        
+    </div>
+
+    <div>
 
     <div id="overCanvas"></div>
 
     <canvas id="canvas" width="600" height="500">
-        
+        <h2>Level: <span id="level"></span></h2>
     </canvas>
 
     </div>
-
-    <p id="start">Start Game</p>
     
 </body>
 </html>
