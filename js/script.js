@@ -7,7 +7,7 @@ let hiScoreValue = 0;
 
 let frequencyModule;
 
-let right;
+let right; // Para movimento do Boss
 
 let currentGame;
 let animationId;
@@ -28,6 +28,8 @@ startBtn.onclick = () => {
     startGame();
 }
 
+
+
 function startGame() {
     
     currentGame = new Game();
@@ -39,42 +41,48 @@ function startGame() {
     updateCanvas();
 }
 
-function shot(key) {
-    if (key === "ArrowUp") {
-        const newShot = new Bullet((currentGame.ship.x + (currentGame.ship.width / 2 - 2)), currentGame.ship.y);
-        currentGame.bullet.push(newShot);
-    }
 
-    for (const shots of currentGame.bullet) {
-        shots.y -= 3;
-        shots.draw();
-    }
-        
+
+function shot(key) {
+
+    if (!currentGame.gameOver && !currentGame.gameWin) //Para não haver tiros depois de gameOver/gameWin
+        if (key === "ArrowUp") {
+            const newShot = new Bullet((currentGame.ship.x + (currentGame.ship.width / 2 - 2)), currentGame.ship.y);
+            currentGame.bullet.push(newShot);
+        }
+
+        for (const shots of currentGame.bullet) {
+            shots.y -= 2;
+            shots.draw();
+        }
+            
 }    
+
+
 
 function changeLevels() {
 
-    if (currentGame.score < 5) {
+    if (currentGame.score < 1) {
         
-        frequencyModule = 80;
+        frequencyModule = 160;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv1.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score >= 5 && currentGame.score < 10) {
-        frequencyModule = 70;
+    } else if (currentGame.score >= 1 && currentGame.score < 2) {
+        frequencyModule = 120;
         currentGame.level = 2;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv2.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score >= 10 && currentGame.score < 20) {
-        frequencyModule = 60;
+    } else if (currentGame.score >= 2 && currentGame.score < 3) {
+        frequencyModule = 80;
         currentGame.level = 3;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv3.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
-// A function boss() apaguei e coloquei aqui a condiçao para que ela se iniciasse, na drawEnemies() tens o resto
+
     } else {
         currentGame.bossStage = true;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/bosslvl.png)';
@@ -83,15 +91,16 @@ function changeLevels() {
         currentGame.boss.move();
         currentGame.boss.draw();
         }
-     
+
  }
+
 
 
 function drawEnemies() {
 
     currentGame.enemiesFrequency++;
   
-    if (currentGame.bossStage === false && currentGame.gameOver === false && currentGame.gameWin === false) {
+    if (!currentGame.bossStage && currentGame.gameOver === false && currentGame.gameWin === false) { 
                 
         if (currentGame.enemiesFrequency % frequencyModule === 0) {
 
@@ -101,84 +110,80 @@ function drawEnemies() {
 
             currentGame.enemies.push(newEnemy);
         }
+    } 
+    
+    currentGame.enemies.forEach(((enemy, index) => { // Tirei esta função do loop acima, para que os inimigos não desapareçam quando vier o bossStage.
+        enemy.y += 0.3; 
+        enemy.draw();
+        
 
-        currentGame.enemies.forEach(((enemy, index) => {
-            enemy.y += 0.3; 
+        if (detectCollision(enemy)){
+            currentGame.enemiesFrequency = 0;
+            currentGame.enemies = [];
+            gameOver();         
+        }
+        
+        if (enemy.y > canvasHeight) {   
+            currentGame.lives--;
+            lives.innerText = currentGame.lives;
+            currentGame.enemies.splice(index, 1);
+        }
+
+        if (currentGame.lives <= 0) {
+            gameOver();
+        }
+        
+    }))
     
-            enemy.y ++;
-            enemy.draw();
-            
-    
-            //enemy.draw();
-    
-            if (detectCollision(enemy)){
-                currentGame.enemiesFrequency = 0;
-                currentGame.enemies = [];
-                gameOver();         
-            }
-            
-            if (enemy.y > canvasHeight) {   
-                currentGame.lives--;
-                lives.innerText = currentGame.lives;
-                currentGame.enemies.splice(index, 1);
-            }
-    
-            if (currentGame.lives <= 0) {
-                gameOver();
-            }
-            
-        }))
-// Funçao boss() está aqui o resto
-    } else if (currentGame.gameOver === false && currentGame.gameWin === false && currentGame.boss) {
+    if (currentGame.gameOver === false && currentGame.gameWin === false && currentGame.bossStage) {
 
         if (currentGame.enemiesFrequency % 46 === 0) {
             const newBossShot = new BossShot(currentGame.boss.x + 42, (currentGame.boss.y + currentGame.boss.height), 10, 7, "orange");
             currentGame.bossShots.push(newBossShot);
+        }
+
+        currentGame.bossShots.forEach(((shot, index) => {
+            if (currentGame.boss.health > 50) { 
+            shot.y += 1.2;
+            } else {
+                
+                if (index % 4 === 0) {
+                    shot.x += 0.4;
+                    shot.y += 1.2;
+                } else if (index % 5 === 0) {
+                    shot.x -= 0.4;
+                    shot.y += 1.2;
+                } else {
+                    shot.y += 1.2;
+                }
+            }
+
+            shot.draw();
+
+            if (detectCollision(shot)){
+                currentGame.enemiesFrequency = 0;
+                currentGame.bossShots = [];
+                gameOver();         
+            }
+        }))     
     }
 
-    currentGame.bossShots.forEach(((shot, index) => {
-        if (currentGame.boss.health > 50) { 
-        shot.y += 1.2;
-        } else {
-            
-            if (index % 4 === 0) {
-                shot.x += 0.2;
-                shot.y += 1.2;
-            } else if (index % 5 === 0) {
-                shot.x -= 0.2;
-                shot.y += 1.2;
-            } else {
-                shot.y += 1.2;
-            }
-        }
-
-        shot.draw();
-
-        if (detectCollision(shot)){
-            currentGame.enemiesFrequency = 0;
-            currentGame.bossShots = [];
-            gameOver();         
-        }
-
-        // if (shot.y > canvasHeight) {   
-        //     currentGame.bossShots.splice(index, 1);
-        // }
-
-    }))
-        
 }
 
 
 
 function detectCollision(enemy) {
-
+    
     return !(
         currentGame.ship.left() > enemy.right() ||
         currentGame.ship.right() < enemy.left() ||
         currentGame.ship.top() > enemy.bottom() ||
         currentGame.ship.bottom() < enemy.top() 
-    ) 
+    )
+
 }
+
+
 
 function shotEnemy() {
 
@@ -221,23 +226,27 @@ function shotEnemy() {
 }
 
 
+
 function gameWin() {
 
-    context.clearRect(0, 0, canvasWidth, canvasHeight);
+    checkHiScore(); // Meti aqui esta
     currentGame.gameWin = true;
     currentGame.enemiesFrequency = 0;
     currentGame.boss = {};
-    //currentGame.score = 0;
+    currentGame.score = 0;
     currentGame.enemies = [];
     currentGame.bossShots = [];
     currentGame.bullet = [];
-    //score.innerText = 0;
+    score.innerText = 0;
     lives.innerText = 5;
     overCanvas.innerText = 'YOU WIN'
     overCanvas.style.display = 'block';
+    context.clearRect(0, 0, canvasWidth, canvasHeight);
     cancelAnimationFrame(animationId);
 
 }
+
+
 
 function checkHiScore() {
     if (currentGame.score > hiScoreValue) {
@@ -245,6 +254,8 @@ function checkHiScore() {
         hiScore.innerText = hiScoreValue;
     }
 }
+
+
 
 function gameOver() {
 
@@ -254,6 +265,8 @@ function gameOver() {
     currentGame.score = 0;
     currentGame.enemies = [];
     currentGame.bossShots = [];
+    currentGame.boss = {};
+    currentGame.bullet = [];
     score.innerText = 0;
     lives.innerText = 5;
     overCanvas.innerText = 'GAME OVER'
@@ -262,6 +275,8 @@ function gameOver() {
     cancelAnimationFrame(animationId);
     
 }
+
+
 
 function updateCanvas() {
 
@@ -274,32 +289,17 @@ function updateCanvas() {
     idLevel.innerText = currentGame.level;
     if (currentGame.gameOver === false || currentGame.gameWin === false) {
     animationId = requestAnimationFrame(updateCanvas);
-    } 
+    }
+
 }
     
-
-// function reset(key) {
-//     // if (key === "Enter" && (currentGame.gameOver !== false || currentGame.gameWin !== false) ) {
-//     //     startGame();
-//     // }
-
-//     if (key === "Enter" && (currentGame.gameOver === true || currentGame.gameWin === true)) {
-//         startGame();
-//     }
-// }
-
-
-// document.addEventListener('keydown', (e) => {  
-//     reset(e.key);
-// })
 
 document.addEventListener('keydown', (e) => {
     currentGame.ship.move(e.key);
     shot(e.key);
-
 })
 
 
-}
+
 
 
