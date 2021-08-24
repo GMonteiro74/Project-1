@@ -16,7 +16,7 @@ h1 {
 }
 
 body {
-    background: linear-gradient(0deg, rgba(77, 77, 77, 0.836),rgba(77, 77, 77, 0.6)), url(universe.jpg);
+    background: linear-gradient(0deg, rgba(77, 77, 77, 0.836),rgba(77, 77, 77, 0.6)), url(images/universe.jpg);
     display: flex;
     flex-direction: row;
     justify-content: space-around;

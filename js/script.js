@@ -5,9 +5,9 @@ const canvasWidth = canvas.clientWidth;
 const canvasHeight = canvas.clientHeight;
 let hiScoreValue = 0;
 
-let animationId;
-let right = true
 let frequencyModule;
+
+let right;
 
 let currentGame;
 
@@ -20,8 +20,6 @@ let idLevel = document.querySelector('#level');
 lives.innerText = 5;
 score.innerText = 0;
 hiScore.innerText = hiScoreValue;
-
-
 
 
 const startBtn = document.querySelector('#start');
@@ -63,25 +61,17 @@ function changeLevels() {
         frequencyModule = 70;
         currentGame.level = 2;
 
-    } else if (currentGame.score >= 10) {
+    } else if (currentGame.score >= 10 && currentGame.score < 20) {
         frequencyModule = 60;
         currentGame.level = 3;
-    }
- }
-
-function boss() {
-    
-    if (currentGame.score > 0 && currentGame.boss.health > 0 && currentGame.gameOver === false && currentGame.gameWin === false) {
+// A function boss() apaguei e coloquei aqui a condiçao para que ela se iniciasse, na drawEnemies() tens o resto
+    } else {
         currentGame.bossStage = true;
         currentGame.boss.move();
         currentGame.boss.draw();
-    }
-
-    // if (currentGame.boss.health <= 0) {
-    //     currentGame.bossStage = false;
-    // }
-
-}
+        }
+     
+ }
 
 
 function drawEnemies() {
@@ -89,46 +79,48 @@ function drawEnemies() {
     currentGame.enemiesFrequency++;
   
     if (currentGame.bossStage === false && currentGame.gameOver === false && currentGame.gameWin === false) {
-        if (currentGame.score < 8) {
-            if (currentGame.enemiesFrequency % 220 === 0) {
-                const randomEnemyX = Math.floor(Math.random() * 450);
+                
+        if (currentGame.enemiesFrequency % frequencyModule === 0) {
 
-                const newEnemy = new Enemy(randomEnemyX, 0, 40, 35, "green");
-    // if (currentGame.enemiesFrequency % frequencyModule === 0) {
-    //     const randomEnemyX = Math.floor(Math.random() * 550);
+            const randomEnemyX = Math.floor(Math.random() * 550);
+        
+            const newEnemy = new Enemy(randomEnemyX, 0, 40, 35, "green");
 
-                currentGame.enemies.push(newEnemy);
-            }
-        } else if (currentGame.score < 15) {
-             overCanvas.innerText = 'Level 2';
-             overCanvas.style.display = 'block';
-             
-            if (currentGame.enemiesFrequency % 160 === 0) {
-                const randomEnemyX = Math.floor(Math.random() * 450);
-
-                const newEnemy = new Enemy(randomEnemyX, 0, 40, 35, "green");
-
-                currentGame.enemies.push(newEnemy);
-            }
-        } else if (currentGame.score < 30) {
-             overCanvas.innerText = 'Level 3';
-             overCanvas.style.display = 'block';
-             
-            if (currentGame.enemiesFrequency % 120 === 0) {
-                const randomEnemyX = Math.floor(Math.random() * 450);
-
-                const newEnemy = new Enemy(randomEnemyX, 0, 40, 35, "green");
-
-                currentGame.enemies.push(newEnemy);
-            }
+            currentGame.enemies.push(newEnemy);
         }
 
-    } else if (currentGame.gameOver === false && currentGame.gameWin === false) {
+        currentGame.enemies.forEach(((enemy, index) => {
+            enemy.y += 0.3; 
+    
+            enemy.y ++;
+            enemy.draw();
+            
+    
+            //enemy.draw();
+    
+            if (detectCollision(enemy)){
+                currentGame.enemiesFrequency = 0;
+                currentGame.enemies = [];
+                gameOver();         
+            }
+            
+            if (enemy.y > canvasHeight) {   
+                currentGame.lives--;
+                lives.innerText = currentGame.lives;
+                currentGame.enemies.splice(index, 1);
+            }
+    
+            if (currentGame.lives <= 0) {
+                gameOver();
+            }
+            
+        }))
+// Funçao boss() está aqui o resto
+    } else if (currentGame.gameOver === false && currentGame.gameWin === false && currentGame.boss) {
+
         if (currentGame.enemiesFrequency % 46 === 0) {
             const newBossShot = new BossShot(currentGame.boss.x + 42, (currentGame.boss.y + currentGame.boss.height), 10, 7, "orange");
             currentGame.bossShots.push(newBossShot);
-              
-        }
     }
 
     currentGame.bossShots.forEach(((shot, index) => {
@@ -164,34 +156,6 @@ function drawEnemies() {
 
     }))
         
-    
-
-    currentGame.enemies.forEach(((enemy, index) => {
-        enemy.y += 0.3; 
-
-        enemy.y ++;
-        enemy.draw();
-        
-
-        //enemy.draw();
-
-        if (detectCollision(enemy)){
-            currentGame.enemiesFrequency = 0;
-            currentGame.enemies = [];
-            gameOver();         
-        }
-        
-        if (enemy.y > canvasHeight) {   
-            currentGame.lives--;
-            lives.innerText = currentGame.lives;
-            currentGame.enemies.splice(index, 1);
-        }
-
-        if (currentGame.lives <= 0) {
-            gameOver();
-        }
-        
-    }))
 }
 
 
@@ -232,7 +196,7 @@ function shotEnemy() {
             shot.right() > currentGame.boss.left() &&
             shot.left() < currentGame.boss.right()
         ) {
-            currentGame.boss.health-= 1;
+            currentGame.boss.health -= 1;
             currentGame.bullet.splice(indexShot, 1);
             console.log(currentGame.boss.health);
 
@@ -256,12 +220,13 @@ function gameWin() {
     context.clearRect(0, 0, canvasWidth, canvasHeight);
     currentGame.gameWin = true;
     currentGame.enemiesFrequency = 0;
+    currentGame.boss = {};
     //currentGame.score = 0;
     currentGame.enemies = [];
     currentGame.bossShots = [];
     //score.innerText = 0;
     lives.innerText = 5;
-    overCanvas.innerText = 'YOU WIN !!!'
+    overCanvas.innerText = 'YOU WIN'
     overCanvas.style.display = 'block';
     cancelAnimationFrame(currentGame.animationId);
 
@@ -301,31 +266,23 @@ function updateCanvas() {
     drawEnemies();
     shot();
     shotEnemy();
-    boss();
-    // if (currentGame.gameOver === false || currentGame.gameWin === false) {
-    // currentGame.animationId = requestAnimationFrame(updateCanvas);
-    // } else if (currentGame.gameOver === true) {
-    //     gameOver();
-    // } else if (currentGame.gameWin === true) {
-    //     gameWin();
-    // }
     changeLevels();
     idLevel.innerText = currentGame.level;
-    if (currentGame.gameOver === false) {
+    if (currentGame.gameOver === false || currentGame.gameWin === false) {
     currentGame.animationId = requestAnimationFrame(updateCanvas);
     } 
 }
     
 
-function reset(key) {
-    // if (key === "Enter" && (currentGame.gameOver !== false || currentGame.gameWin !== false) ) {
-    //     startGame();
-    // }
+// function reset(key) {
+//     // if (key === "Enter" && (currentGame.gameOver !== false || currentGame.gameWin !== false) ) {
+//     //     startGame();
+//     // }
 
-    if (key === "Enter" && (currentGame.gameOver === true || currentGame.gameWin === true)) {
-        startGame();
-    }
-}
+//     if (key === "Enter" && (currentGame.gameOver === true || currentGame.gameWin === true)) {
+//         startGame();
+//     }
+// }
 
 
 // document.addEventListener('keydown', (e) => {  

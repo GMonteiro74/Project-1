@@ -8,7 +8,7 @@ class Enemy {
         this.color = color;
 
         const img = new Image();
-        img.src = "../enemy_recortado.png";
+        img.src = "./images/enemy_recortado.png";
         this.image = img;
         
      }
