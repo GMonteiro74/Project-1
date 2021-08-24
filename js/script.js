@@ -31,7 +31,7 @@ startBtn.onclick = () => {
 
 
 function startGame() {
-    
+
     currentGame = new Game();
     currentGame.ship = new Player();
     currentGame.boss = new Boss(canvasWidth / 2 - 40, -90);
@@ -56,27 +56,33 @@ function shot(key) {
             shots.draw();
         }
             
-}    
+}
 
 
 
-function changeLevels() {
+  
 
-    if (currentGame.score < 1) {
-        
+
+
+
+
+
+function changeLevels() { // Qualquer mudança aqui foi só nos scores, para efeitos de teste. nada de relevante.
+
+    if (currentGame.score < 15) {
         frequencyModule = 160;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv1.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score >= 1 && currentGame.score < 2) {
+    } else if (currentGame.score < 25) {
         frequencyModule = 120;
         currentGame.level = 2;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv2.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score >= 2 && currentGame.score < 3) {
+    } else if (currentGame.score < 50) {
         frequencyModule = 80;
         currentGame.level = 3;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv3.png)';
@@ -112,8 +118,17 @@ function drawEnemies() {
         }
     } 
     
-    currentGame.enemies.forEach(((enemy, index) => { // Tirei esta função do loop acima, para que os inimigos não desapareçam quando vier o bossStage.
-        enemy.y += 0.3; 
+    currentGame.enemies.forEach(((enemy, index) => { // Tirei este forEach do loop acima, para que os inimigos não desapareçam quando vier o bossStage. Funciona na perfeição.
+        
+        if (currentGame.level === 1) { // Inimigos mais rápidos com o passar dos níveis.
+            enemy.y += 0.4;
+        } else if (currentGame.level === 2) {
+            enemy.y += 0.5;
+        } else if (currentGame.level === 3) {
+            enemy.y += 0.6;
+        }
+        
+        
         enemy.draw();
         
 
@@ -213,7 +228,7 @@ function shotEnemy() {
         ) {
             currentGame.boss.health -= 1;
             currentGame.bullet.splice(indexShot, 1);
-            console.log(currentGame.boss.health);
+            console.log(currentGame.boss.health); //
 
         }
         
@@ -227,7 +242,7 @@ function shotEnemy() {
 
 
 
-function gameWin() {
+function gameWin() { // Sei que adicionei aqui umas coisas, mas não retirei nada.
 
     checkHiScore(); // Meti aqui esta
     currentGame.gameWin = true;
@@ -257,7 +272,7 @@ function checkHiScore() {
 
 
 
-function gameOver() {
+function gameOver() { // Sei que adicionei aqui umas coisas, mas não retirei nada.
 
     checkHiScore();
     currentGame.gameOver = true;
@@ -282,6 +297,7 @@ function updateCanvas() {
 
     context.clearRect(0, 0, canvasWidth, canvasHeight);
     currentGame.ship.draw();
+    smoothMovement(); // adicionei só aqui a função
     drawEnemies();
     shot();
     shotEnemy();
@@ -294,11 +310,29 @@ function updateCanvas() {
 }
     
 
+function smoothMovement() {  // Esta função pressupõem umas ligeiras alterações ao move() do player.
+
+    if (currentGame.ship.x >= (canvasWidth - (currentGame.ship.width + 5))) {
+        
+        currentGame.ship.x = canvasWidth - (currentGame.ship.width + 5);
+        
+    } else if (currentGame.ship.x <= 5) {
+        
+        currentGame.ship.x = 5;
+        
+    }
+
+    currentGame.ship.speed *= currentGame.ship.friction; // Isto é para o speed ir diminuindo quando largas a tecla
+    currentGame.ship.x += currentGame.ship.speed;
+}
+
+
+
+
 document.addEventListener('keydown', (e) => {
     currentGame.ship.move(e.key);
     shot(e.key);
 })
-
 
 
 

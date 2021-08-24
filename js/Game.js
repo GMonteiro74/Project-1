@@ -13,7 +13,6 @@ class Game {
         this.boss = {};
         this.bossShots = [];
         this.gameWin = false;
-        
 
       }
 
