@@ -12,6 +12,7 @@ let right; // Para movimento do Boss
 let currentGame;
 let animationId;
 
+
 // All the music
 let bass = new Audio(src="/music/Pad_and_Bass Copy.wav");
 let drums = new Audio(src="/music/drums.mp3");
@@ -20,6 +21,7 @@ let bossBells = new Audio(src="/music/boss.mp3");
 let notes = new Audio(src="/music/5 notes Copy.wav");
 let win = new Audio(src="/music/Victory.wav");
 let over = new Audio(src="/music/GameOver Copy.wav");
+// All the music
 
 
 let score = document.getElementById("score");
@@ -28,7 +30,7 @@ let hiScore = document.querySelector('#hiScore');
 let overCanvas = document.querySelector('#overCanvas');
 let idLevel = document.querySelector('#level');
 
-lives.innerText = 5;
+lives.innerText = 1;
 score.innerText = 0;
 hiScore.innerText = hiScoreValue;
 
@@ -39,24 +41,14 @@ startBtn.onclick = () => {
 }
 
 
+
+
 function startGame() {
-    bass.pause();
-    drums.pause();
-    melody.pause();
-    bossBells.pause();
-    win.pause();
-    over.pause();
-    over.load();
-    bass.load();
-    drums.load();
-    melody.load();
-    bossBells.load();
-    win.load();
+    loadSounds();
     played = true;
     currentGame = new Game();
     currentGame.ship = new Player();
     currentGame.boss = new Boss(canvasWidth / 2 - 40, -90);
-    currentGame.boss.draw();
     currentGame.ship.draw();
     overCanvas.style.display = 'none';
     cancelAnimationFrame(animationId);
@@ -64,90 +56,13 @@ function startGame() {
 }
 
 
-let played;
+let played; // To avoid a loop of the 3 notes transition between stages
 
-// test1.addEventListener('ended', function() {
-//     test3.play();
-// }, false);
 
-// document.onload = function() {
-//     test3.play();
-// }
-
-function sound() {
-    if (currentGame.level === 1 && currentGame.bossStage === false && currentGame.gameOver === false) {
-        drums.pause();
-        melody.pause();
-        bossBells.pause();
-        win.pause();
-        over.pause();
-        bass.play();
-
-    } else if (currentGame.level === 2 && currentGame.bossStage === false && currentGame.gameOver === false) {
-        bass.pause();
-        melody.pause();
-        bossBells.pause();
-        win.pause();
-        over.pause();
-         if (played === true) {
-            notes.play();
-             played = false 
-         } else {
-            notes.addEventListener('ended', function() {
-                drums.play();
-            }, false);
-        }
-    } else if (currentGame.level === 3 && currentGame.bossStage === false && currentGame.gameOver === false) {
-        bass.pause();
-        drums.pause();
-        bossBells.pause();
-        win.pause();
-        over.pause();
-        if (played === false) {
-            notes.play();
-            played = true 
-        } else {
-            notes.addEventListener('ended', function() {
-                melody.play();
-            }, false);
-        }
-    } else if (currentGame.bossStage === true && currentGame.gameWin === false && currentGame.gameOver === false) {
-        bass.pause();
-        drums.pause();
-        melody.pause();
-        win.pause();
-        over.pause();
-        if (played === true) {
-            notes.play();
-            played = false 
-        } else {
-            notes.addEventListener('ended', function() {
-                bossBells.play();
-            }, false);
-        
-        }
-    } else if (currentGame.gameWin === true) {
-        bass.pause();
-        drums.pause();
-        melody.pause();
-        bossBells.pause();
-        over.pause();
-        win.play();        
-    } else if (currentGame.gameOver === true) {
-
-        bass.pause();
-        drums.pause();
-        melody.pause();
-        bossBells.pause();
-        win.pause();
-        over.play();        
-    }
-    console.log(currentGame.level, currentGame.bossStage);
-}
 
 function shot(key) {
 
-    if (!currentGame.gameOver && !currentGame.gameWin) //Para não haver tiros depois de gameOver/gameWin
+    if (!currentGame.gameOver && !currentGame.gameWin)
         if (key === "ArrowUp") {
             const newShot = new Bullet((currentGame.ship.x + (currentGame.ship.width / 2 - 2)), currentGame.ship.y);
             currentGame.bullet.push(newShot);
@@ -161,22 +76,25 @@ function shot(key) {
 }
 
 
-function changeLevels() { // Qualquer mudança aqui foi só nos scores, para efeitos de teste. nada de relevante.
 
-    if (currentGame.score < 7) {
+
+
+function changeLevels() {
+
+    if (currentGame.score < 15) {
         frequencyModule = 160;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv1.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score < 15 && currentGame.score > 6) {
+    } else if (currentGame.score >= 15 && currentGame.score < 30) {
         frequencyModule = 120;
         currentGame.level = 2;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv2.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score < 25 && currentGame.score > 14) {
+    } else if (currentGame.score >= 30 && currentGame.score < 60) {
         frequencyModule = 80;
         currentGame.level = 3;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv3.png)';
@@ -194,9 +112,14 @@ function changeLevels() { // Qualquer mudança aqui foi só nos scores, para efe
 
  }
 
+
+
+
+
+
  function powerLifeUp () {
 
-    if (currentGame.enemiesFrequency % 100 === 0 && currentGame.level === 2 && currentGame.level === 3 && !currentGame.bossStage) {
+    if (currentGame.enemiesFrequency % 1324 === 0 && (currentGame.level === 2 || currentGame.level === 3) && !currentGame.bossStage) {
      
         const randomPowerUpX = Math.floor(Math.random() * 550);
         const newLifeUp = new PowerUp(randomPowerUpX);
@@ -207,7 +130,7 @@ function changeLevels() { // Qualquer mudança aqui foi só nos scores, para efe
          currentGame.lifeUp.forEach ((powerUp, index) => {
              powerUp.y++;
              powerUp.draw();
-             console.log(powerUp);
+            //  console.log(powerUp);
 
              if (detectCollision(powerUp)) {
 
@@ -220,6 +143,11 @@ function changeLevels() { // Qualquer mudança aqui foi só nos scores, para efe
 
      
  }
+
+
+
+
+
 
 function drawEnemies() {
 
@@ -239,15 +167,16 @@ function drawEnemies() {
         }
     } 
     
-    currentGame.enemies.forEach(((enemy, index) => { // Tirei este forEach do loop acima, para que os inimigos não desapareçam quando vier o bossStage. Funciona na perfeição.
+    currentGame.enemies.forEach(((enemy, index) => {
         
-        if (currentGame.level === 1) { // Inimigos mais rápidos com o passar dos níveis.
-            enemy.y += 0.8;
+        if (currentGame.level === 1) { 
+            enemy.y += 0.4;
         } else if (currentGame.level === 2) {
-            enemy.y += 1;
+            enemy.y += 0.5;
         } else if (currentGame.level === 3) {
-            enemy.y += 1.2;
-            setTimeout(enemiesShooting(enemy), 500);
+            enemy.y += 0.6;
+            //setTimeout(enemiesShooting(enemy), 500);
+            // enemiesShooting(enemy);
         }
         
         
@@ -266,9 +195,9 @@ function drawEnemies() {
             currentGame.enemies.splice(index, 1);
         }
 
-        // if (currentGame.lives <= 0) {
-        //     gameOver();
-        // }
+        if (currentGame.lives <= 0) {
+            gameOver();
+        }
         
     }))
     
@@ -316,30 +245,36 @@ function drawEnemies() {
 
 }
 
-function enemiesShooting (enemy) {
 
-    if (currentGame.enemiesFrequency % 160 === 0) {
-    const newEnemyBullet =  new BossShot(enemy.x + (enemy.width / 2), enemy.y + enemy.height, 3, 6, 'orange');
-    currentGame.enemiesBullets.push(newEnemyBullet);
-    }
 
-    currentGame.enemiesBullets.forEach ((shot, index) => {
+//Isto está só commented out. Não mudei nada de especial.
+
+// function enemiesShooting(enemy) {
+
+//     if (currentGame.enemiesFrequency % 230 === 0) {
+//         const newEnemyBullet =  new BossShot(enemy.x + (enemy.width / 2), enemy.y + enemy.height, 3, 6, 'orange');
+//         currentGame.enemiesBullets.push(newEnemyBullet);
+//     }
+
+//     currentGame.enemiesBullets.forEach((shot, index) => {
         
-        shot.y += 1.4;
-        shot.draw();        
+//         shot.y += 0.3;
+//         shot.draw();        
 
-        if (shot.y > canvasHeight) {
-            currentGame.enemiesBullets.splice(index, 1);
-        }
+//         if (shot.y > canvasHeight) {
+//             currentGame.enemiesBullets.splice(index, 1);
+//         }
 
-        if (detectCollision(shot)) {
-            currentGame.enemiesFrequency = 0;
-            currentGame.enemiesBullets = [];
-            gameOver();
-        }
+//         if (detectCollision(shot)) {
+//             // currentGame.enemiesFrequency = 0;
+//             // currentGame.enemiesBullets = [];
+//             // gameOver();
+//         }
 
-    })
-}
+//     })
+// }
+
+
 
 
 function detectCollision(enemy) {
@@ -352,6 +287,7 @@ function detectCollision(enemy) {
     )
 
 }
+
 
 
 
@@ -396,9 +332,11 @@ function shotEnemy() {
 
 
 
-function gameWin() { // Sei que adicionei aqui umas coisas, mas não retirei nada.
 
-    checkHiScore(); // Meti aqui esta
+
+function gameWin() { 
+
+    checkHiScore(); 
     currentGame.gameWin = true;
     currentGame.enemiesFrequency = 0;
     currentGame.boss = {};
@@ -418,6 +356,8 @@ function gameWin() { // Sei que adicionei aqui umas coisas, mas não retirei nad
 
 
 
+
+
 function checkHiScore() {
     if (currentGame.score > hiScoreValue) {
         hiScoreValue = currentGame.score;
@@ -427,8 +367,10 @@ function checkHiScore() {
 
 
 
-function gameOver() { // Sei que adicionei aqui umas coisas, mas não retirei nada.
 
+
+
+function gameOver() { 
     checkHiScore();
     context.clearRect(0, 0, canvasWidth, canvasHeight);
     currentGame.gameOver = true;
@@ -437,7 +379,6 @@ function gameOver() { // Sei que adicionei aqui umas coisas, mas não retirei na
     currentGame.enemies = [];
     currentGame.bossShots = [];
     currentGame.enemiesBullets = [];
-    currentGame.ship = {};
     currentGame.boss = {};
     currentGame.bullet = [];
     score.innerText = 0;
@@ -448,8 +389,12 @@ function gameOver() { // Sei que adicionei aqui umas coisas, mas não retirei na
     
 }    
 
-function smoothMovement() {  // Esta função pressupõem umas ligeiras alterações ao move() do player como estava anteriormente.
 
+
+
+
+
+function smoothMovement() {  
     if (currentGame.ship.x >= (canvasWidth - (currentGame.ship.width + 5))) {
         
         currentGame.ship.x = canvasWidth - (currentGame.ship.width + 5);
@@ -460,26 +405,40 @@ function smoothMovement() {  // Esta função pressupõem umas ligeiras alteraç
         
     }
 
-    currentGame.ship.speed *= currentGame.ship.friction; // Isto é para o speed ir diminuindo quando largas a tecla
+    currentGame.ship.speed *= currentGame.ship.friction; 
     currentGame.ship.x += currentGame.ship.speed;
 }
+
+
+
+
+
 
 function updateCanvas() {
 
     context.clearRect(0, 0, canvasWidth, canvasHeight);
-    currentGame.ship.draw();
-    smoothMovement(); // adicionei só aqui a função
+    if (currentGame.gameOver === false && currentGame.gameWin === false) {
+        currentGame.ship.draw();
+    }
+    smoothMovement();
     drawEnemies();
     shot();
     shotEnemy();
     powerLifeUp();
     changeLevels();
+    sound();
     if (currentGame.gameOver === false || currentGame.gameWin === false) {
     animationId = requestAnimationFrame(updateCanvas);
     }
 
 }
     
+
+
+
+
+
+
 document.addEventListener('keydown', (e) => {
     currentGame.ship.move(e.key);
     shot(e.key);
