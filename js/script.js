@@ -163,20 +163,20 @@ function shot(key) {
 
 function changeLevels() { // Qualquer mudança aqui foi só nos scores, para efeitos de teste. nada de relevante.
 
-    if (currentGame.score < 1) {
+    if (currentGame.score < 7) {
         frequencyModule = 160;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv1.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score < 2 && currentGame.score > 0) {
+    } else if (currentGame.score < 15 && currentGame.score > 6) {
         frequencyModule = 120;
         currentGame.level = 2;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv2.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score < 3 && currentGame.score > 1) {
+    } else if (currentGame.score < 25 && currentGame.score > 14) {
         frequencyModule = 80;
         currentGame.level = 3;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv3.png)';
