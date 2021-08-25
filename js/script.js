@@ -12,6 +12,16 @@ let right; // Para movimento do Boss
 let currentGame;
 let animationId;
 
+// All the music
+let bass = new Audio(src="/music/Pad_and_Bass Copy.wav");
+let drums = new Audio(src="/music/drums.mp3");
+let melody = new Audio(src="/music/melody.mp3");
+let bossBells = new Audio(src="/music/boss.mp3");
+let notes = new Audio(src="/music/5 notes Copy.wav");
+let win = new Audio(src="/music/Victory.wav");
+let over = new Audio(src="/music/GameOver Copy.wav");
+
+
 let score = document.getElementById("score");
 let lives = document.getElementById("lives");
 let hiScore = document.querySelector('#hiScore');
@@ -29,12 +39,24 @@ startBtn.onclick = () => {
 }
 
 
-
 function startGame() {
-
+    bass.pause();
+    drums.pause();
+    melody.pause();
+    bossBells.pause();
+    win.pause();
+    over.pause();
+    over.load();
+    bass.load();
+    drums.load();
+    melody.load();
+    bossBells.load();
+    win.load();
+    played = true;
     currentGame = new Game();
     currentGame.ship = new Player();
     currentGame.boss = new Boss(canvasWidth / 2 - 40, -90);
+    currentGame.boss.draw();
     currentGame.ship.draw();
     overCanvas.style.display = 'none';
     cancelAnimationFrame(animationId);
@@ -42,6 +64,86 @@ function startGame() {
 }
 
 
+let played;
+
+// test1.addEventListener('ended', function() {
+//     test3.play();
+// }, false);
+
+// document.onload = function() {
+//     test3.play();
+// }
+
+function sound() {
+    if (currentGame.level === 1 && currentGame.bossStage === false && currentGame.gameOver === false) {
+        drums.pause();
+        melody.pause();
+        bossBells.pause();
+        win.pause();
+        over.pause();
+        bass.play();
+
+    } else if (currentGame.level === 2 && currentGame.bossStage === false && currentGame.gameOver === false) {
+        bass.pause();
+        melody.pause();
+        bossBells.pause();
+        win.pause();
+        over.pause();
+         if (played === true) {
+            notes.play();
+             played = false 
+         } else {
+            notes.addEventListener('ended', function() {
+                drums.play();
+            }, false);
+        }
+    } else if (currentGame.level === 3 && currentGame.bossStage === false && currentGame.gameOver === false) {
+        bass.pause();
+        drums.pause();
+        bossBells.pause();
+        win.pause();
+        over.pause();
+        if (played === false) {
+            notes.play();
+            played = true 
+        } else {
+            notes.addEventListener('ended', function() {
+                melody.play();
+            }, false);
+        }
+    } else if (currentGame.bossStage === true && currentGame.gameWin === false && currentGame.gameOver === false) {
+        bass.pause();
+        drums.pause();
+        melody.pause();
+        win.pause();
+        over.pause();
+        if (played === true) {
+            notes.play();
+            played = false 
+        } else {
+            notes.addEventListener('ended', function() {
+                bossBells.play();
+            }, false);
+        
+        }
+    } else if (currentGame.gameWin === true) {
+        bass.pause();
+        drums.pause();
+        melody.pause();
+        bossBells.pause();
+        over.pause();
+        win.play();        
+    } else if (currentGame.gameOver === true) {
+
+        bass.pause();
+        drums.pause();
+        melody.pause();
+        bossBells.pause();
+        win.pause();
+        over.play();        
+    }
+    console.log(currentGame.level, currentGame.bossStage);
+}
 
 function shot(key) {
 
@@ -59,30 +161,22 @@ function shot(key) {
 }
 
 
-
-  
-
-
-
-
-
-
 function changeLevels() { // Qualquer mudança aqui foi só nos scores, para efeitos de teste. nada de relevante.
 
-    if (currentGame.score < 15) {
+    if (currentGame.score < 1) {
         frequencyModule = 160;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv1.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score < 25) {
+    } else if (currentGame.score < 2 && currentGame.score > 0) {
         frequencyModule = 120;
         currentGame.level = 2;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv2.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score < 50) {
+    } else if (currentGame.score < 3 && currentGame.score > 1) {
         frequencyModule = 80;
         currentGame.level = 3;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv3.png)';
@@ -144,32 +238,41 @@ function drawEnemies() {
             currentGame.enemies.splice(index, 1);
         }
 
-        if (currentGame.lives <= 0) {
-            gameOver();
-        }
+        // if (currentGame.lives <= 0) {
+        //     gameOver();
+        // }
         
     }))
     
     if (currentGame.gameOver === false && currentGame.gameWin === false && currentGame.bossStage) {
 
-        if (currentGame.enemiesFrequency % 46 === 0) {
-            const newBossShot = new BossShot(currentGame.boss.x + 42, (currentGame.boss.y + currentGame.boss.height), 10, 7, "orange");
-            currentGame.bossShots.push(newBossShot);
+        if (currentGame.boss.health > 50) {
+            if (currentGame.enemiesFrequency % 46 === 0) {
+                const newBossShot = new BossShot(currentGame.boss.x + 42, (currentGame.boss.y + currentGame.boss.height), 10, 7, "orange");
+                currentGame.bossShots.push(newBossShot);
+            }
+        } else { // para a frequencia dos tiros do Boss aumentar quando começam a ir para os lados. Pode ser reduzido com uma variavel para o módulo.
+            if (currentGame.enemiesFrequency % 25 === 0) {
+                const newBossShot = new BossShot(currentGame.boss.x + 42, (currentGame.boss.y + currentGame.boss.height), 10, 7, "orange");
+                currentGame.bossShots.push(newBossShot);
+            }
         }
 
         currentGame.bossShots.forEach(((shot, index) => {
-            if (currentGame.boss.health > 50) { 
+            if (currentGame.boss.health > 70) { 
             shot.y += 1.2;
+            } else if (currentGame.boss.health > 50) {
+            shot.y += 1.4;
             } else {
                 
                 if (index % 4 === 0) {
                     shot.x += 0.4;
-                    shot.y += 1.2;
+                    shot.y += 1.4;
                 } else if (index % 5 === 0) {
                     shot.x -= 0.4;
-                    shot.y += 1.2;
+                    shot.y += 1.4;
                 } else {
-                    shot.y += 1.2;
+                    shot.y += 1.6;
                 }
             }
 
@@ -258,6 +361,7 @@ function gameWin() { // Sei que adicionei aqui umas coisas, mas não retirei nad
     overCanvas.style.display = 'block';
     context.clearRect(0, 0, canvasWidth, canvasHeight);
     cancelAnimationFrame(animationId);
+    
 
 }
 
@@ -302,6 +406,7 @@ function updateCanvas() {
     shot();
     shotEnemy();
     changeLevels();
+    sound();
     idLevel.innerText = currentGame.level;
     if (currentGame.gameOver === false || currentGame.gameWin === false) {
     animationId = requestAnimationFrame(updateCanvas);
@@ -310,7 +415,7 @@ function updateCanvas() {
 }
     
 
-function smoothMovement() {  // Esta função pressupõem umas ligeiras alterações ao move() do player.
+function smoothMovement() {  // Esta função pressupõem umas ligeiras alterações ao move() do player como estava anteriormente.
 
     if (currentGame.ship.x >= (canvasWidth - (currentGame.ship.width + 5))) {
         
@@ -333,7 +438,6 @@ document.addEventListener('keydown', (e) => {
     currentGame.ship.move(e.key);
     shot(e.key);
 })
-
 
 
 
