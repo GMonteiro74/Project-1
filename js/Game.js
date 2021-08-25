@@ -2,17 +2,18 @@ class Game {
     constructor() {
         this.ship = {};
         this.enemies = [];
+        this.enemiesBullets = [];
         this.enemiesFrequency = 0;
         this.bullet = [];
         this.score = 0;
         this.lives = 5;
         this.level = 1;
         this.gameOver = false;
-        this.animationId = null;
         this.bossStage = false;
         this.boss = {};
         this.bossShots = [];
         this.gameWin = false;
+        this.lifeUp = [];
 
       }
 
