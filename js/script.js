@@ -13,13 +13,13 @@ let currentGame;
 let animationId;
 
 // All the music
-let bass = new Audio(src="/music/Pad_and_Bass Copy.wav");
-let drums = new Audio(src="/music/drums.mp3");
-let melody = new Audio(src="/music/melody.mp3");
-let bossBells = new Audio(src="/music/boss.mp3");
-let notes = new Audio(src="/music/5 notes Copy.wav");
-let win = new Audio(src="/music/Victory.wav");
-let over = new Audio(src="/music/GameOver Copy.wav");
+let bass = new Audio(src="./music/Pad_and_Bass Copy.wav");
+let drums = new Audio(src="./music/drums.mp3");
+let melody = new Audio(src="./music/melody.mp3");
+let bossBells = new Audio(src="./music/boss.mp3");
+let notes = new Audio(src="./music/5 notes Copy.wav");
+let win = new Audio(src="./music/Victory.wav");
+let over = new Audio(src="./music/GameOver Copy.wav");
 
 
 let score = document.getElementById("score");
@@ -49,7 +49,7 @@ function startGame() {
     over.load();
     bass.load();
     drums.load();
-    melody.load();
+    melody.load(); 
     bossBells.load();
     win.load();
     played = true;
@@ -196,7 +196,7 @@ function changeLevels() { // Qualquer mudança aqui foi só nos scores, para efe
 
  function powerLifeUp () {
 
-    if (currentGame.enemiesFrequency % 100 === 0 && currentGame.level === 2 && currentGame.level === 3 && !currentGame.bossStage) {
+    if (currentGame.enemiesFrequency % 100 === 0 && !currentGame.bossStage && currentGame.level != 1) {
      
         const randomPowerUpX = Math.floor(Math.random() * 550);
         const newLifeUp = new PowerUp(randomPowerUpX);
@@ -474,6 +474,7 @@ function updateCanvas() {
     shotEnemy();
     powerLifeUp();
     changeLevels();
+    // sound();
     if (currentGame.gameOver === false || currentGame.gameWin === false) {
     animationId = requestAnimationFrame(updateCanvas);
     }
