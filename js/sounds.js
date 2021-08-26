@@ -5,6 +5,7 @@ function loadSounds() {
     bossBells.load();
     over.load();
     win.load();
+    notes.load();
 }
 
 

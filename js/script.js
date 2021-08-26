@@ -19,7 +19,7 @@ let drums = new Audio(src="/music/drums.mp3");
 let melody = new Audio(src="/music/melody.mp3");
 let bossBells = new Audio(src="/music/boss.mp3");
 let notes = new Audio(src="/music/5 notes Copy.wav");
-let win = new Audio(src="/music/Victory.wav");
+let win = new Audio(src="/music/Victory_final2 Copy.wav"); // corrigi uma nota no ficheiro audio
 let over = new Audio(src="/music/GameOver Copy.wav");
 // All the music
 
@@ -75,20 +75,20 @@ function shot(key) {
 
 function changeLevels() {
 
-    if (currentGame.score < 15) {
+    if (currentGame.score < 1) { // qq troca de valores aqui foi para testar
         frequencyModule = 120;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv1.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score >= 15 && currentGame.score < 30) {
+    } else if (currentGame.score >= 1 && currentGame.score < 3) { // qq troca de valores aqui foi para testar
         frequencyModule = 100;
         currentGame.level = 2;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv2.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score >= 30 && currentGame.score < 50) {
+    } else if (currentGame.score >= 3 && currentGame.score < 5) { // qq troca de valores aqui foi para testar
         frequencyModule = 80;
         currentGame.level = 3;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv3.png)';
@@ -123,7 +123,6 @@ function changeLevels() {
              powerUp.draw();
 
              if (detectCollision(powerUp)) {
-
                 currentGame.lives++;
                 lives.innerText = currentGame.lives;
                 currentGame.lifeUp.splice(index, 1);
@@ -289,6 +288,7 @@ function shotEnemy() {
                 currentGame.score++;
                 score.innerText = currentGame.score;
                 
+                
             }
             
         })
@@ -300,6 +300,7 @@ function shotEnemy() {
         ) {
             currentGame.boss.health -= 1;
             currentGame.bullet.splice(indexShot, 1);
+            
 
         }
         
