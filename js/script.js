@@ -30,7 +30,7 @@ let hiScore = document.querySelector('#hiScore');
 let overCanvas = document.querySelector('#overCanvas');
 let idLevel = document.querySelector('#level');
 
-lives.innerText = 1;
+lives.innerText = 3;
 score.innerText = 0;
 hiScore.innerText = hiScoreValue;
 
@@ -54,8 +54,7 @@ function startGame() {
 }
 
 
-let played; // To avoid a loop of the 3 notes transition between stages
-
+let played; 
 
 
 function shot(key) {
@@ -75,21 +74,21 @@ function shot(key) {
 
 function changeLevels() {
 
-    if (currentGame.score < 15) {
-        frequencyModule = 120;
+    if (currentGame.score < 10) {
+        frequencyModule = 100;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv1.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score >= 15 && currentGame.score < 30) {
-        frequencyModule = 100;
+    } else if (currentGame.score >= 10 && currentGame.score < 20) {
+        frequencyModule = 80;
         currentGame.level = 2;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv2.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score >= 30 && currentGame.score < 50) {
-        frequencyModule = 80;
+    } else if (currentGame.score >= 20 && currentGame.score < 30) {
+        frequencyModule = 60;
         currentGame.level = 3;
         canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv3.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
@@ -110,7 +109,7 @@ function changeLevels() {
 
  function powerLifeUp () {
 
-    if (currentGame.enemiesFrequency % 1324 === 0 && currentGame.level > 1 && !currentGame.bossStage && !currentGame.gameWin && !currentGame.gameOver) {
+    if (currentGame.enemiesFrequency % 800 === 0 && currentGame.level > 1 && !currentGame.bossStage && !currentGame.gameWin && !currentGame.gameOver) {
      
         const randomPowerUpX = Math.floor(Math.random() * 550);
         const newLifeUp = new PowerUp(randomPowerUpX);
@@ -156,16 +155,14 @@ function drawEnemies() {
     currentGame.enemies.forEach(((enemy, index) => {
         
         if (currentGame.level === 1) { 
-            enemy.y += 1
-        } else if (currentGame.level === 2) {
             enemy.y += 1.2
-        } else if (currentGame.level === 3) {
+        } else if (currentGame.level === 2) {
             enemy.y += 1.4
-            // setTimeout(enemiesShooting(enemy), 500);
-            // enemiesShooting(enemy);
+        } else if (currentGame.level === 3) {
+            enemy.y += 1.6
         }
         
-        
+
         enemy.draw();
         
 
@@ -187,78 +184,59 @@ function drawEnemies() {
         
     }))
     
-    if (currentGame.gameOver === false && currentGame.gameWin === false && currentGame.bossStage) {
-
-        if (currentGame.boss.health > 50) {
-            if (currentGame.enemiesFrequency % 17 === 0) {
-                const newBossShot = new BossShot(currentGame.boss.x + 42, (currentGame.boss.y + currentGame.boss.height), 10, 7, "orange");
-                currentGame.bossShots.push(newBossShot);
-            }
-        } else { // para a frequencia dos tiros do Boss aumentar quando começam a ir para os lados. Pode ser reduzido com uma variavel para o módulo.
-            if (currentGame.enemiesFrequency % 12 === 0) {
-                const newBossShot = new BossShot(currentGame.boss.x + 42, (currentGame.boss.y + currentGame.boss.height), 10, 7, "orange");
-                currentGame.bossShots.push(newBossShot);
-            }
-        }
-
-        currentGame.bossShots.forEach(((shot, index) => {
-            if (currentGame.boss.health > 70) { 
-            shot.y += 3;
-            } else if (currentGame.boss.health > 50) {
-            shot.y += 3.2;
-            } else {
-
-                if (index % 4 === 0) {
-                    shot.x += 0.4;
-                    shot.y += 3.2;
-                } else if (index % 5 === 0) {
-                    shot.x -= 0.4;
-                    shot.y += 3.2;
-                } else {
-                    shot.y += 3.4;
-                }
-            }
-
-            shot.draw();
-
-            if (detectCollision(shot)){
-                currentGame.enemiesFrequency = 0;
-                currentGame.bossShots = [];
-                gameOver();         
-            }
-        }))     
+    if (!currentGame.gameOver && !currentGame.gameWin && currentGame.bossStage) {
+        // pus tudo o que estava aqui nesta função
+        bossShooting();
+             
     }
 
 }
 
-
-
-//Isto está só commented out. Não mudei nada de especial.
-
-// function enemiesShooting(enemy) {
-
-//     if (currentGame.enemiesFrequency % 400 === 0) {
-//         const newEnemyBullet =  new BossShot(enemy.x + (enemy.width / 2), enemy.y + enemy.height, 3, 6, 'orange');
-//         currentGame.enemiesBullets.push(newEnemyBullet);
-//     }
-
-//     currentGame.enemiesBullets.forEach((shot, index) => {
+// esta é a função
+function bossShooting () {
+    
+    if (currentGame.boss.health > 50) {
         
-//         shot.y += 0.9;
-//         shot.draw();        
+        if (currentGame.enemiesFrequency % 25 === 0) {
+            const newBossShot = new BossShot(currentGame.boss.x + 42, (currentGame.boss.y + currentGame.boss.height), 10, 7);
+            currentGame.bossShots.push(newBossShot);
+        }
+    } else {
+         
+        if (currentGame.enemiesFrequency % 15 === 0) {
+            const newBossShot = new BossShot(currentGame.boss.x + 42, (currentGame.boss.y + currentGame.boss.height), 10, 7);
+            currentGame.bossShots.push(newBossShot);
+        }
+    }
 
-//         if (shot.y > canvasHeight) {
-//             currentGame.enemiesBullets.splice(index, 1);
-//         }
+    currentGame.bossShots.forEach(((shot, index) => {
+        if (currentGame.boss.health > 70) { 
+        shot.y += 3;
+        } else if (currentGame.boss.health > 50) {
+        shot.y += 3.2;
+        } else {
 
-//         if (detectCollision(shot)) {
-//             currentGame.enemiesFrequency = 0;
-//             currentGame.enemiesBullets = [];
-//             gameOver();
-//         }
+            if (index % 4 === 0) {
+                shot.x += 0.4;
+                shot.y += 3.2;
+            } else if (index % 5 === 0) {
+                shot.x -= 0.4;
+                shot.y += 3.2;
+            } else {
+                shot.y += 3.4;
+            }
+        }
 
-//     })
-// }
+        shot.draw();
+
+        if (detectCollision(shot)){
+            currentGame.enemiesFrequency = 0;
+            currentGame.bossShots = [];
+            gameOver();         
+        }
+    }))
+}
+
 
 function detectCollision(enemy) {
     
@@ -323,17 +301,17 @@ function gameWin() {
     currentGame.bullet = [];
     currentGame.lifeUp = [];
     score.innerText = 0;
-    lives.innerText = 1;
+    lives.innerText = 3;
     overCanvas.innerText = 'YOU WIN'
     overCanvas.style.display = 'block';
     context.clearRect(0, 0, canvasWidth, canvasHeight);
     cancelAnimationFrame(animationId);
-    
 
 }
 
 
 function checkHiScore() {
+
     if (currentGame.score > hiScoreValue) {
         hiScoreValue = currentGame.score;
         hiScore.innerText = hiScoreValue;
@@ -342,6 +320,7 @@ function checkHiScore() {
 
 
 function gameOver() { 
+
     checkHiScore();
     context.clearRect(0, 0, canvasWidth, canvasHeight);
     currentGame.gameOver = true;
@@ -354,7 +333,7 @@ function gameOver() {
     currentGame.boss = {};
     currentGame.bullet = [];
     score.innerText = 0;
-    lives.innerText = 1;
+    lives.innerText = 3;
     overCanvas.innerText = 'GAME OVER';
     overCanvas.style.display = 'block';
     cancelAnimationFrame(animationId);
@@ -382,7 +361,7 @@ function smoothMovement() {
 function updateCanvas() {
 
     context.clearRect(0, 0, canvasWidth, canvasHeight);
-    if (currentGame.gameOver === false && currentGame.gameWin === false) {
+    if (!currentGame.gameOver && !currentGame.gameWin) {
         currentGame.ship.draw();
     }
     smoothMovement();
@@ -392,7 +371,7 @@ function updateCanvas() {
     powerLifeUp();
     changeLevels();
     sound();
-    if (currentGame.gameOver === false || currentGame.gameWin === false) {
+    if (!currentGame.gameOver|| !currentGame.gameWin) {
     animationId = requestAnimationFrame(updateCanvas);
     }
 

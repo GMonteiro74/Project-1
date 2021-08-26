@@ -13,6 +13,7 @@ html {
 
 h1 {
     text-align: center;
+    font-size: 2.5rem;
 }
 
 body {
@@ -56,7 +57,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-evenly;
     width: 20vw;
 }
 
