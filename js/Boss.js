@@ -39,18 +39,18 @@ class Boss {
     
     move() {
         if (this.y < 10) {
-            this.y += 0.5;
+            this.y += 1;
         }  
         
 
         if (this.y === 10 &&  this.x < ((canvasWidth - 10) - this.width) && right === true) {
-            this.x += 1.5;
+            this.x += 4;
         } else {
             right = false;
         }
 
         if (this.y === 10 && right === false && this.x > 10) {
-            this.x -= 1.5;
+            this.x -= 4;
         } else {
             right = true;
         }

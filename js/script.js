@@ -41,8 +41,6 @@ startBtn.onclick = () => {
 }
 
 
-
-
 function startGame() {
     loadSounds();
     played = true;
@@ -69,7 +67,7 @@ function shot(key) {
         }
 
         for (const shots of currentGame.bullet) {
-            shots.y -= 2;
+            shots.y -= 4;
             shots.draw();
         }
             
@@ -79,32 +77,33 @@ function changeLevels() {
 
     if (currentGame.score < 15) {
         frequencyModule = 120;
-        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv1.png)';
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv1.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
     } else if (currentGame.score >= 15 && currentGame.score < 30) {
         frequencyModule = 100;
         currentGame.level = 2;
-        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv2.png)';
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv2.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if (currentGame.score >= 30 && currentGame.score < 45) {
+    } else if (currentGame.score >= 30 && currentGame.score < 50) {
         frequencyModule = 80;
         currentGame.level = 3;
-        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv3.png)';
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv3.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
     } else {
         currentGame.bossStage = true;
-        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/bosslvl.png)';
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/bosslvl.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
         currentGame.boss.move();
         currentGame.boss.draw();
-        }
+
+    } 
 
  }
 
@@ -120,7 +119,7 @@ function changeLevels() {
     }
 
          currentGame.lifeUp.forEach ((powerUp, index) => {
-             powerUp.y++;
+             powerUp.y += 2;
              powerUp.draw();
 
              if (detectCollision(powerUp)) {
@@ -157,11 +156,11 @@ function drawEnemies() {
     currentGame.enemies.forEach(((enemy, index) => {
         
         if (currentGame.level === 1) { 
-            enemy.y += 0.8
-        } else if (currentGame.level === 2) {
             enemy.y += 1
-        } else if (currentGame.level === 3) {
+        } else if (currentGame.level === 2) {
             enemy.y += 1.2
+        } else if (currentGame.level === 3) {
+            enemy.y += 1.4
             // setTimeout(enemiesShooting(enemy), 500);
             // enemiesShooting(enemy);
         }
@@ -191,12 +190,12 @@ function drawEnemies() {
     if (currentGame.gameOver === false && currentGame.gameWin === false && currentGame.bossStage) {
 
         if (currentGame.boss.health > 50) {
-            if (currentGame.enemiesFrequency % 46 === 0) {
+            if (currentGame.enemiesFrequency % 17 === 0) {
                 const newBossShot = new BossShot(currentGame.boss.x + 42, (currentGame.boss.y + currentGame.boss.height), 10, 7, "orange");
                 currentGame.bossShots.push(newBossShot);
             }
         } else { // para a frequencia dos tiros do Boss aumentar quando começam a ir para os lados. Pode ser reduzido com uma variavel para o módulo.
-            if (currentGame.enemiesFrequency % 25 === 0) {
+            if (currentGame.enemiesFrequency % 12 === 0) {
                 const newBossShot = new BossShot(currentGame.boss.x + 42, (currentGame.boss.y + currentGame.boss.height), 10, 7, "orange");
                 currentGame.bossShots.push(newBossShot);
             }
@@ -204,19 +203,19 @@ function drawEnemies() {
 
         currentGame.bossShots.forEach(((shot, index) => {
             if (currentGame.boss.health > 70) { 
-            shot.y += 1.2;
+            shot.y += 3;
             } else if (currentGame.boss.health > 50) {
-            shot.y += 1.4;
+            shot.y += 3.2;
             } else {
 
                 if (index % 4 === 0) {
                     shot.x += 0.4;
-                    shot.y += 1.4;
+                    shot.y += 3.2;
                 } else if (index % 5 === 0) {
                     shot.x -= 0.4;
-                    shot.y += 1.4;
+                    shot.y += 3.2;
                 } else {
-                    shot.y += 1.6;
+                    shot.y += 3.4;
                 }
             }
 
@@ -238,7 +237,7 @@ function drawEnemies() {
 
 // function enemiesShooting(enemy) {
 
-//     if (currentGame.enemiesFrequency % 230 === 0) {
+//     if (currentGame.enemiesFrequency % 400 === 0) {
 //         const newEnemyBullet =  new BossShot(enemy.x + (enemy.width / 2), enemy.y + enemy.height, 3, 6, 'orange');
 //         currentGame.enemiesBullets.push(newEnemyBullet);
 //     }
@@ -260,9 +259,6 @@ function drawEnemies() {
 
 //     })
 // }
-
-
-
 
 function detectCollision(enemy) {
     
@@ -315,10 +311,6 @@ function shotEnemy() {
         
 }
 
-
-
-
-
 function gameWin() { 
 
     checkHiScore(); 
@@ -368,11 +360,6 @@ function gameOver() {
     cancelAnimationFrame(animationId);
     
 }    
-
-
-
-
-
 
 function smoothMovement() {  
     if (currentGame.ship.x >= (canvasWidth - (currentGame.ship.width + 5))) {

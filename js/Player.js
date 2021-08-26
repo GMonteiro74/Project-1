@@ -20,7 +20,7 @@ class Player {
 
 
     move(key) {
-        const vel = 3;
+        const vel = 5.5;
         if (key === "ArrowLeft") {
           if (this.speed > -vel) {
           

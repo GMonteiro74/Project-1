@@ -4,11 +4,14 @@ class Bullet {
         this.y = y;
         this.width = 4;
         this.height = 8;
+
+        const img = new Image();
+        img.src = "./images/player-shot.png";
+        this.image = img;
     }
 
     draw() {
-        context.fillStyle = "yellow";
-        context.fillRect(this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.x, this.y, this.width, this.height);
     }    
 
     top() {
