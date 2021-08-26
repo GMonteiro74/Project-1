@@ -95,22 +95,15 @@ function changeLevels() {
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else if(currentGame.boss.health > 50) {
-        currentGame.bossStage = true;
-        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv3.png)';
-        canvas.style.backgroundRepeat = 'no-repeat';
-        canvas.style.backgroundPosition = 'center center';
-        currentGame.boss.move();
-        currentGame.boss.draw();
-
     } else {
-        canvas.style.background = 'linear-gradient(0deg, rgba(229, 82, 82, 0.7),rgba(229, 82, 82, 0.7)), url(images/bosslvl.png)';
+        currentGame.bossStage = true;
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/bosslvl.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
         currentGame.boss.move();
         currentGame.boss.draw();
 
-        }
+    } 
 
  }
 
@@ -163,11 +156,10 @@ function drawEnemies() {
     currentGame.enemies.forEach(((enemy, index) => {
         
         if (currentGame.level === 1) { 
-            enemy.y += 0.8;
-        } else if (currentGame.level === 2) {
-            enemy.y += 1;
-        } else if (currentGame.level === 3) {
+            enemy.y ++;
+        } else if (currentGame.level > 1) {
             enemy.y += 1.2;
+        } else if (currentGame.level === 3) {
             setTimeout(enemiesShooting(enemy), 500);
             enemiesShooting(enemy);
         }
