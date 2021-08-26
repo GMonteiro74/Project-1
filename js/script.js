@@ -30,7 +30,7 @@ let hiScore = document.querySelector('#hiScore');
 let overCanvas = document.querySelector('#overCanvas');
 let idLevel = document.querySelector('#level');
 
-lives.innerText = 5;
+lives.innerText = 1;
 score.innerText = 0;
 hiScore.innerText = hiScoreValue;
 
@@ -111,7 +111,7 @@ function changeLevels() {
 
  function powerLifeUp () {
 
-    if (currentGame.enemiesFrequency % 1324 === 0 && currentGame.level > 1 && !currentGame.bossStage) {
+    if (currentGame.enemiesFrequency % 1324 === 0 && currentGame.level > 1 && !currentGame.bossStage && !currentGame.gameWin && !currentGame.gameOver) {
      
         const randomPowerUpX = Math.floor(Math.random() * 550);
         const newLifeUp = new PowerUp(randomPowerUpX);
@@ -157,13 +157,13 @@ function drawEnemies() {
     currentGame.enemies.forEach(((enemy, index) => {
         
         if (currentGame.level === 1) { 
-            enemy.y += 0.8;
+            enemy.y += 0.8
         } else if (currentGame.level === 2) {
-            enemy.y += 1;
+            enemy.y += 1
         } else if (currentGame.level === 3) {
-            enemy.y += 1.2;
-            setTimeout(enemiesShooting(enemy), 500);
-            enemiesShooting(enemy);
+            enemy.y += 1.2
+            // setTimeout(enemiesShooting(enemy), 500);
+            // enemiesShooting(enemy);
         }
         
         
@@ -236,30 +236,30 @@ function drawEnemies() {
 
 //Isto está só commented out. Não mudei nada de especial.
 
-function enemiesShooting(enemy) {
+// function enemiesShooting(enemy) {
 
-    if (currentGame.enemiesFrequency % 230 === 0) {
-        const newEnemyBullet =  new BossShot(enemy.x + (enemy.width / 2), enemy.y + enemy.height, 3, 6, 'orange');
-        currentGame.enemiesBullets.push(newEnemyBullet);
-    }
+//     if (currentGame.enemiesFrequency % 230 === 0) {
+//         const newEnemyBullet =  new BossShot(enemy.x + (enemy.width / 2), enemy.y + enemy.height, 3, 6, 'orange');
+//         currentGame.enemiesBullets.push(newEnemyBullet);
+//     }
 
-    currentGame.enemiesBullets.forEach((shot, index) => {
+//     currentGame.enemiesBullets.forEach((shot, index) => {
         
-        shot.y += 1.4;
-        shot.draw();        
+//         shot.y += 0.9;
+//         shot.draw();        
 
-        if (shot.y > canvasHeight) {
-            currentGame.enemiesBullets.splice(index, 1);
-        }
+//         if (shot.y > canvasHeight) {
+//             currentGame.enemiesBullets.splice(index, 1);
+//         }
 
-        if (detectCollision(shot)) {
-            currentGame.enemiesFrequency = 0;
-            currentGame.enemiesBullets = [];
-            gameOver();
-        }
+//         if (detectCollision(shot)) {
+//             currentGame.enemiesFrequency = 0;
+//             currentGame.enemiesBullets = [];
+//             gameOver();
+//         }
 
-    })
-}
+//     })
+// }
 
 
 
@@ -331,7 +331,7 @@ function gameWin() {
     currentGame.bullet = [];
     currentGame.lifeUp = [];
     score.innerText = 0;
-    lives.innerText = 5;
+    lives.innerText = 1;
     overCanvas.innerText = 'YOU WIN'
     overCanvas.style.display = 'block';
     context.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -362,7 +362,7 @@ function gameOver() {
     currentGame.boss = {};
     currentGame.bullet = [];
     score.innerText = 0;
-    lives.innerText = 5;
+    lives.innerText = 1;
     overCanvas.innerText = 'GAME OVER';
     overCanvas.style.display = 'block';
     cancelAnimationFrame(animationId);
@@ -392,8 +392,6 @@ function smoothMovement() {
 
 
 
-
-
 function updateCanvas() {
 
     context.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -413,9 +411,6 @@ function updateCanvas() {
 
 }
     
-
-
-
 
 
 

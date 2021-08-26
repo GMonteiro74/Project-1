@@ -6,7 +6,7 @@ class Game {
         this.enemiesFrequency = 0;
         this.bullet = [];
         this.score = 0;
-        this.lives = 5;
+        this.lives = 1;
         this.level = 1;
         this.gameOver = false;
         this.bossStage = false;
