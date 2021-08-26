@@ -32,7 +32,7 @@ let hiScore = document.querySelector('#hiScore');
 let overCanvas = document.querySelector('#overCanvas');
 let idLevel = document.querySelector('#level');
 
-lives.innerText = 1;
+lives.innerText = 3;
 score.innerText = 0;
 hiScore.innerText = hiScoreValue;
 
@@ -45,7 +45,7 @@ startBtn.onclick = () => {
 
 function startGame() {
     score.innerText = 0; // Meti isto aqui para tirar do gameOver e gameWin.
-    lives.innerText = 1;
+    lives.innerText = 3;
     loadSounds();
     played = true;
     currentGame = new Game();
