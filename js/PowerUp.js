@@ -2,8 +2,8 @@ class PowerUp {
     constructor(x) {
         this.x = x;
         this.y = 0;
-        this.width = 40;
-        this.height = 40;
+        this.width = 30;
+        this.height = 27; // mudei o width and height porque fiz crop à imagem original para ficar com a HitBox certa. Podes aceitar no Pull.
 
         const img = new Image();
         img.src = "./images/life.png";

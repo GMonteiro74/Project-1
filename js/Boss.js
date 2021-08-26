@@ -4,7 +4,7 @@ class Boss {
         this.y = y;
         this.width = 80;
         this.height = 75;
-        this.health = 1;
+        this.health = 100;
 
         const img = new Image();
         img.src = "./images/pngwing.com.png";
