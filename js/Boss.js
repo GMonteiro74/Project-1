@@ -4,7 +4,7 @@ class Boss {
         this.y = y;
         this.width = 80;
         this.height = 75;
-        this.health = 1;  // qq troca de valores aqui foi para testar
+        this.health = 100;  // qq troca de valores aqui foi para testar
 
         const img = new Image();
         img.src = "./images/pngwing.com.png";
