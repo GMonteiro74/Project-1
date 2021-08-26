@@ -1,11 +1,11 @@
 
 class Enemy {
-    constructor(x, y, width, height, color) {
+    constructor(x, y, width, height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.color = color;
+        
 
         const img = new Image();
         img.src = "./images/enemy_recortado.png";
@@ -38,14 +38,18 @@ class Enemy {
 
 
 class BossShot extends Enemy {
-    constructor(x, y, width, height, color) {
-        super(x, y, width, height, color);
+    constructor(x, y, width, height) {
+        super(x, y, width, height);
+
+        const img = new Image();
+        img.src = "./images/enemy-shot.png";
+        this.image = img;
+
         
     }
 
     draw() {
-        context.fillStyle = this.color;
-        context.fillRect(this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.x, this.y, this.width, this.height);
     }  
     
 }

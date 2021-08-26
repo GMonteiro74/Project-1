@@ -29,7 +29,9 @@ body {
 }
 
 #canvas {
-    background-color: rgba(46, 46, 46, 0.692);
+    background: linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/canvas-instructions.png);
+    background-repeat: no-repeat;
+    background-position: center center;
     border: 5px solid rgb(212, 216, 173);
 }
 

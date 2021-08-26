@@ -30,7 +30,7 @@ let hiScore = document.querySelector('#hiScore');
 let overCanvas = document.querySelector('#overCanvas');
 let idLevel = document.querySelector('#level');
 
-lives.innerText = 5;
+lives.innerText = 1;
 score.innerText = 0;
 hiScore.innerText = hiScoreValue;
 
@@ -39,8 +39,6 @@ const startBtn = document.querySelector('#start');
 startBtn.onclick = () => {
     startGame();
 }
-
-
 
 
 function startGame() {
@@ -79,31 +77,39 @@ function changeLevels() {
 
     if (currentGame.score < 15) {
         frequencyModule = 120;
-        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv1.png)';
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv1.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
     } else if (currentGame.score >= 15 && currentGame.score < 30) {
         frequencyModule = 100;
         currentGame.level = 2;
-        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv2.png)';
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv2.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
     } else if (currentGame.score >= 30 && currentGame.score < 45) {
         frequencyModule = 80;
         currentGame.level = 3;
-        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/lv3.png)';
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv3.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
 
-    } else {
+    } else if(currentGame.boss.health > 50) {
         currentGame.bossStage = true;
-        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.692),rgba(46, 46, 46, 0.692)), url(images/bosslvl.png)';
+        canvas.style.background = 'linear-gradient(0deg, rgba(46, 46, 46, 0.5),rgba(46, 46, 46, 0.5)), url(images/lv3.png)';
         canvas.style.backgroundRepeat = 'no-repeat';
         canvas.style.backgroundPosition = 'center center';
         currentGame.boss.move();
         currentGame.boss.draw();
+
+    } else {
+        canvas.style.background = 'linear-gradient(0deg, rgba(229, 82, 82, 0.7),rgba(229, 82, 82, 0.7)), url(images/bosslvl.png)';
+        canvas.style.backgroundRepeat = 'no-repeat';
+        canvas.style.backgroundPosition = 'center center';
+        currentGame.boss.move();
+        currentGame.boss.draw();
+
         }
 
  }
@@ -111,7 +117,7 @@ function changeLevels() {
 
  function powerLifeUp () {
 
-    if (currentGame.enemiesFrequency % 1324 === 0 && currentGame.level > 1 && !currentGame.bossStage) {
+    if (currentGame.enemiesFrequency % 824 === 0 && currentGame.level > 1 && !currentGame.bossStage) {
      
         const randomPowerUpX = Math.floor(Math.random() * 550);
         const newLifeUp = new PowerUp(randomPowerUpX);
@@ -238,7 +244,7 @@ function drawEnemies() {
 
 function enemiesShooting(enemy) {
 
-    if (currentGame.enemiesFrequency % 230 === 0) {
+    if (currentGame.enemiesFrequency % 400 === 0) {
         const newEnemyBullet =  new BossShot(enemy.x + (enemy.width / 2), enemy.y + enemy.height, 3, 6, 'orange');
         currentGame.enemiesBullets.push(newEnemyBullet);
     }
@@ -260,9 +266,6 @@ function enemiesShooting(enemy) {
 
     })
 }
-
-
-
 
 function detectCollision(enemy) {
     
@@ -315,10 +318,6 @@ function shotEnemy() {
         
 }
 
-
-
-
-
 function gameWin() { 
 
     checkHiScore(); 
@@ -362,17 +361,12 @@ function gameOver() {
     currentGame.boss = {};
     currentGame.bullet = [];
     score.innerText = 0;
-    lives.innerText = 5;
+    lives.innerText = 1;
     overCanvas.innerText = 'GAME OVER';
     overCanvas.style.display = 'block';
     cancelAnimationFrame(animationId);
     
 }    
-
-
-
-
-
 
 function smoothMovement() {  
     if (currentGame.ship.x >= (canvasWidth - (currentGame.ship.width + 5))) {
@@ -388,11 +382,6 @@ function smoothMovement() {
     currentGame.ship.speed *= currentGame.ship.friction; 
     currentGame.ship.x += currentGame.ship.speed;
 }
-
-
-
-
-
 
 function updateCanvas() {
 
@@ -413,11 +402,6 @@ function updateCanvas() {
 
 }
     
-
-
-
-
-
 
 document.addEventListener('keydown', (e) => {
     currentGame.ship.move(e.key);
