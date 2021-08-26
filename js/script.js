@@ -21,8 +21,8 @@ let bossBells = new Audio(src="/music/boss.mp3");
 let notes = new Audio(src="/music/5 notes Copy Copy.wav"); // baixei o volume da faixa
 let win = new Audio(src="/music/Victory_final2 Copy.wav"); // corrigi uma nota no ficheiro audio
 let over = new Audio(src="/music/GameOver Copy.wav");
-let lifeUp = new Audio(src="/music/LifeUp1 Copy.wav");  // Sons para lifeUp e lifeDown
-let lifeDown = new Audio(src="/music/LifeDown1 Copy.wav");
+let lifeUp = new Audio(src="/music/LifeUp2 Copy Copy.wav");  // Sons para lifeUp e lifeDown
+let lifeDown = new Audio(src="/music/LifeDown2 Copy Copy.wav");
 // All the music
 
 
