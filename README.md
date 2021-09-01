@@ -14,5 +14,5 @@ In the end of all of the saucers destroyed, the mighty evil BOSS comes your way!
 
 Go ahead and try to defeat the Boss (good luck) and win the game! 🏆
 
-All credits for this awesome game goes to JRPedrosa and GMonteiro74.
+All credits for this awesome game goes to [João Pedrosa](https://github.com/JRPedrosa) and Gonçalo Monteiro(https://github.com/GMonteiro74).
 
