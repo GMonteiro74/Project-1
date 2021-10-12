@@ -1,6 +1,6 @@
 <a href="https://space-ship-ironhack.netlify.app/"><h1>Space ship 🚀</h1></a>
 
-<h3>The game of the future (or maybe not).</h3> <hr>
+<h3>The game of the future (or maybe not).</h3> <br>
 
 For the Ironhack web dev bootcamp we developed a game in HTML5 and JavaScript using Canvas. This is the result of week long work.
 
@@ -14,4 +14,4 @@ In the end of all of the saucers destroyed, the mighty evil BOSS comes your way!
 
 Go ahead and try to defeat the Boss (good luck) and win the game! 🏆
 
-All credits for this awesome game goes to <a href="https://github.com/JRPedrosa">João Pedrosa</a> and <a href="https://github.com/GMonteiro74">Gonçalo Monteiro</a>.
+All credits for this awesome game goes to <a href="https://github.com/GMonteiro74">Gonçalo Monteiro</a> and <a href="https://github.com/JRPedrosa">João Pedrosa</a>.
