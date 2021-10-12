@@ -14,6 +14,6 @@ In the end of all of the saucers destroyed, the mighty evil BOSS comes your way!
 
 Go ahead and try to defeat the Boss (good luck) and win the game! 🏆
 
-All credits for this awesome game goes to <a href="https://github.com/GMonteiro74">Gonçalo Monteiro</a> and <a href="https://github.com/JRPedrosa">João Pedrosa</a>.
+Credits for this awesome game goes to <a href="https://github.com/GMonteiro74">Gonçalo Monteiro</a> and <a href="https://github.com/JRPedrosa">João Pedrosa</a>.
 
-Music composed by João Pedrosa.
+Music composed by <a href="https://github.com/JRPedrosa">João Pedrosa</a>.
