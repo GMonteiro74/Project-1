@@ -2,6 +2,8 @@
 
 <h3>The game of the future (or maybe not).</h3> <br>
 
+<a href="https://space-ship-ironhack.netlify.app/">Click here to play!</a>
+
 For the Ironhack WebDev bootcamp we developed a game in HTML5 and JavaScript using Canvas. This is the result of a week long work.
 
 The goal of the game is very simple, you control a space ship in its horizontal axis and enemies keep coming from above. Just shoot at them and destroy the flying saucers! 🛸
