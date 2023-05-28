@@ -53,7 +53,7 @@ function startGame() {
     currentGame.boss = new Boss(canvasWidth / 2 - 40, -90);
     currentGame.ship.draw();
     overCanvas.style.display = 'none';
-    cancelAnimationFrame(animationId);
+    clearTimeout(animationId);
     updateCanvas();
 }
 
@@ -311,7 +311,7 @@ function gameWin() {
     overCanvas.innerText = 'YOU WIN'
     overCanvas.style.display = 'block';
     context.clearRect(0, 0, canvasWidth, canvasHeight);
-    cancelAnimationFrame(animationId);
+    clearTimeout(animationId);
 
 }
 
@@ -342,7 +342,7 @@ function gameOver() {
     // lives.innerText = 0;
     overCanvas.innerText = 'GAME OVER';
     overCanvas.style.display = 'block';
-    cancelAnimationFrame(animationId);
+    clearTimeout(animationId);
     
 }    
 
@@ -378,7 +378,9 @@ function updateCanvas() {
     changeLevels();
     sound();
     if (!currentGame.gameOver|| !currentGame.gameWin) {
-    animationId = requestAnimationFrame(updateCanvas);
+        animationId = setTimeout(() => {
+            updateCanvas();
+          }, 1000 / 60);
     }
 
 }
