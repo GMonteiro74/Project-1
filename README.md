@@ -10,11 +10,14 @@ The goal of the game is very simple, you control a space ship in its horizontal 
 
 For each enemy killed your score increases by one, and by each enemy that passes by you, you lose a life. For every 10 saucers destroyed you go up a level, with more and faster saucers coming!
 
+
+
 Oh I almost forgot ocasionally red hearts fall from the sky, so CATCH THEM, those are lives. ❤️
 
 In the end of all of the saucers destroyed, the mighty evil BOSS comes your way! Be careful he shoots back. 😮
 
 Go ahead and try to defeat the Boss (good luck) and win the game! 🏆
+
 
 Credits for this awesome game goes to <a href="https://github.com/GMonteiro74">Gonçalo Monteiro</a> and <a href="https://github.com/JRPedrosa">João Pedrosa</a>.
 
